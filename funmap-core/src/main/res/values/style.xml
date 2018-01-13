@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="dialog" parent="@android:style/Theme.Dialog">
+        <!--Flameless-->
+        <item name="android:windowFrame">@null</item>
+        <!--Floating-->
+        <item name="android:windowIsFloating">true</item>
+        <!--Transparent-->
+        <item name="android:windowIsTranslucent">false</item>
+        <!--No title-->
+        <item name="android:windowNoTitle">true</item>
+        <!--Background transparent-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--allow dim-->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!--Fullscreen-->
+        <item name="android:windowFullscreen">true</item>
+    </style>
+</resources>
