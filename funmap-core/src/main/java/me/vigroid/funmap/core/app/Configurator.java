@@ -25,6 +25,7 @@ public class Configurator {
         FUN_MAP_CONFIGS.put(ConfigKeys.API_HOST, "");
         FUN_MAP_CONFIGS.put(ConfigKeys.IP, "");
         FUN_MAP_CONFIGS.put(ConfigKeys.PORT, "");
+        FUN_MAP_CONFIGS.put(ConfigKeys.INTERCEPTOR, INTERCEPTORS);
     }
 
     //holder class for the singleton

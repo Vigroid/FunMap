@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_event"
+            android:title="@string/drawer_menu_event" />
+        <item
+            android:id="@+id/nav_gallery"
+            android:title="@string/drawer_menu_gallery"/>
+        <item
+            android:id="@+id/nav_message"
+            android:title="@string/drawer_menu_message" />
+        <item
+            android:id="@+id/nav_setting"
+            android:title="@string/drawer_menu_settings" />
+    </group>
+
+    <item android:title="@string/drawer_menu_about">
+        <menu>
+            <item
+                android:id="@+id/nav_git"
+                android:title="@string/drawer_menu_git" />
+            <item
+                android:id="@+id/nav_author"
+                android:title="@string/drawer_menu_author" />
+        </menu>
+    </item>
+
+</menu>

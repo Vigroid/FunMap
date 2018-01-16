@@ -5,7 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/FunMap.iml" filepath="$PROJECT_DIR$/FunMap.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/funmap-core/funmap-core.iml" filepath="$PROJECT_DIR$/funmap-core/funmap-core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/funmap-ext/funmap-ext.iml" filepath="$PROJECT_DIR$/funmap-ext/funmap-ext.iml" />
+      <module fileurl="file://$PROJECT_DIR$/funmap-impl/funmap-impl.iml" filepath="$PROJECT_DIR$/funmap-impl/funmap-impl.iml" />
     </modules>
   </component>
 </project>
