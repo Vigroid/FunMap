@@ -9,7 +9,7 @@ import java.util.WeakHashMap;
 import io.reactivex.Observable;
 import me.vigroid.funmap.core.net.HttpMethod;
 import me.vigroid.funmap.core.net.RestCreator;
-import me.vigroid.funmap.core.ui.loader.LatteLoader;
+import me.vigroid.funmap.core.ui.loader.FunMapLoader;
 import me.vigroid.funmap.core.ui.loader.LoaderStyle;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -53,7 +53,7 @@ public class RxRestClient {
         Observable<String> observable = null;
 
         if (LOADER_STYLE != null) {
-            LatteLoader.showLoading(CONTEXT, LOADER_STYLE);
+            FunMapLoader.showLoading(CONTEXT, LOADER_STYLE);
         }
 
         switch (method) {

@@ -18,23 +18,30 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
+
             <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/et_search_view"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/toolbar_height"
                 android:layout_gravity="center"
                 android:layout_weight="4"
-                android:gravity="center_vertical"
+                android:gravity="left|center_vertical"
                 android:focusable="false"
                 android:paddingLeft="@dimen/padding"
                 android:hint="@string/et_search"
-                android:background="@android:color/white"
+                android:background="@drawable/border"
                 android:paddingStart="@dimen/padding"
                 tools:ignore="RtlSymmetry" />
-            <View
+            <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="0dp"
                 android:layout_height="@dimen/toolbar_height"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:text="{fa-bell}"
+                android:textColor="@color/colorPrimary"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textSize="18sp"/>
+
         </LinearLayout>
 
     </android.support.v7.widget.Toolbar>
@@ -45,6 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_menu_zoom" />
+        app:rippleColor="@color/colorPrimary"
+        app:srcCompat="@android:drawable/ic_menu_mylocation" />
 
 </android.support.design.widget.CoordinatorLayout>

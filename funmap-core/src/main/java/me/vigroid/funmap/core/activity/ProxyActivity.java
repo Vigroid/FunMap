@@ -1,13 +1,17 @@
 package me.vigroid.funmap.core.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.widget.Toast;
 
-import butterknife.ButterKnife;
+import me.vigroid.funmap.core.R;
+import me.vigroid.funmap.core.fragments.FunMapDelegate;
 import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportActivity;
+import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.SupportActivityDelegate;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
@@ -20,18 +24,37 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 public abstract class ProxyActivity extends AppCompatActivity implements ISupportActivity{
 
-    private final SupportActivityDelegate DELEGATE = new SupportActivityDelegate(this);
+    private final SupportActivityDelegate mDelegate = new SupportActivityDelegate(this);
     private static final long WAIT_TIME = 2000L;
     private long TOUCH_TIME = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DELEGATE.onCreate(savedInstanceState);
+        mDelegate.onCreate(savedInstanceState);
     }
 
     @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDelegate.onPostCreate(savedInstanceState);
+    }
+
+    public void loadRootFragment(int containerId, @NonNull ISupportFragment toFragment) {
+        mDelegate.loadRootFragment(containerId, toFragment);
+    }
+    /**
+     * Note： return mDelegate.dispatchTouchEvent(ev) || super.dispatchTouchEvent(ev);
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return mDelegate.dispatchTouchEvent(ev) || super.dispatchTouchEvent(ev);
+    }
+
+
+    @Override
     protected void onDestroy() {
+        mDelegate.onDestroy();
         super.onDestroy();
         System.gc();
         System.runFinalization();
@@ -42,27 +65,27 @@ public abstract class ProxyActivity extends AppCompatActivity implements ISuppor
      */
     @Override
     public SupportActivityDelegate getSupportDelegate() {
-        return DELEGATE;
+        return mDelegate;
     }
 
     @Override
     public ExtraTransaction extraTransaction() {
-        return DELEGATE.extraTransaction();
+        return mDelegate.extraTransaction();
     }
 
     @Override
     public FragmentAnimator getFragmentAnimator() {
-        return DELEGATE.getFragmentAnimator();
+        return mDelegate.getFragmentAnimator();
     }
 
     @Override
     public void setFragmentAnimator(FragmentAnimator fragmentAnimator) {
-        DELEGATE.setFragmentAnimator(fragmentAnimator);
+        mDelegate.setFragmentAnimator(fragmentAnimator);
     }
 
     @Override
     public FragmentAnimator onCreateFragmentAnimator() {
-        return DELEGATE.onCreateFragmentAnimator();
+        return mDelegate.onCreateFragmentAnimator();
     }
 
     @Override
@@ -77,6 +100,17 @@ public abstract class ProxyActivity extends AppCompatActivity implements ISuppor
 
     @Override
     public void onBackPressed() {
-        DELEGATE.onBackPressed();
+        mDelegate.onBackPressed();
+    }
+
+    public void start(ISupportFragment toFragment) {
+        mDelegate.start(toFragment);
+    }
+
+    /**
+     * @param launchMode Same as Activity's LaunchMode.
+     */
+    public void start(ISupportFragment toFragment, @ISupportFragment.LaunchMode int launchMode) {
+        mDelegate.start(toFragment, launchMode);
     }
 }

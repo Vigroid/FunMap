@@ -12,7 +12,7 @@ import me.vigroid.funmap.core.net.callback.IRequest;
 import me.vigroid.funmap.core.net.callback.ISuccess;
 import me.vigroid.funmap.core.net.callback.RequestCallbacks;
 import me.vigroid.funmap.core.net.download.DownloadHandler;
-import me.vigroid.funmap.core.ui.loader.LatteLoader;
+import me.vigroid.funmap.core.ui.loader.FunMapLoader;
 import me.vigroid.funmap.core.ui.loader.LoaderStyle;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -84,7 +84,7 @@ public class RestClient {
         }
 
         if (LOADER_STYLE!=null){
-            LatteLoader.showLoading(CONTEXT,LOADER_STYLE);
+            FunMapLoader.showLoading(CONTEXT,LOADER_STYLE);
         }
 
         switch (method) {

@@ -7,12 +7,6 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <!-- The main content view -->
-    <include
-        layout="@layout/app_bar_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <!-- The navigation drawer -->
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
@@ -22,5 +16,30 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer" />
+
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout
+        xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/maps_sl_discover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        sothree:umanoPanelHeight="68dp"
+        sothree:umanoShadowHeight="4dp"
+        sothree:umanoParallaxOffset="100dp"
+        sothree:umanoDragView="@+id/dragView"
+        sothree:umanoScrollableView="@+id/list">
+
+        <FrameLayout
+            android:id="@+id/delegate_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".MapsActivity"/>
+
+        <include
+            layout="@layout/sliding_panel_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
 </android.support.v4.widget.DrawerLayout>

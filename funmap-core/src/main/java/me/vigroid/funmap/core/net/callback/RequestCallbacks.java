@@ -2,7 +2,7 @@ package me.vigroid.funmap.core.net.callback;
 
 import android.os.Handler;
 
-import me.vigroid.funmap.core.ui.loader.LatteLoader;
+import me.vigroid.funmap.core.ui.loader.FunMapLoader;
 import me.vigroid.funmap.core.ui.loader.LoaderStyle;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -64,7 +64,7 @@ public class RequestCallbacks implements Callback<String> {
             HANDLER.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    LatteLoader.stopLoading();
+                    FunMapLoader.stopLoading();
                 }
             }, 1000);
         }

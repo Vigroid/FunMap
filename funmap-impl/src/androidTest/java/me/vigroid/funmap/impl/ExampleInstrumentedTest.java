@@ -1,4 +1,4 @@
-package me.vigroid.funmap.ext;
+package me.vigroid.funmap.impl;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

@@ -17,7 +17,7 @@ import me.vigroid.funmap.core.utils.dimen.DimenUtil;
  * Created by vigroid on 10/3/17.
  */
 
-public class LatteLoader {
+public class FunMapLoader {
 
     private static final int LOADER_SIZE_SCALE = 8;
     private static final int LOADER_OFFSET_SCALE = 10;

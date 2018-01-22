@@ -56,4 +56,15 @@ dependencies {
     api 'io.reactivex.rxjava2:rxjava:2.1.8'
     api 'io.reactivex.rxjava2:rxandroid:2.0.1'
     api 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+
+    //font and icons
+    api 'com.joanzapata.iconify:android-iconify-ionicons:2.2.2'
+    api 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2'
+
+    //Image Corping
+    api 'com.github.yalantis:ucrop:2.2.1-native'
+    //dynamic permission granting
+    api 'com.github.hotchemi:permissionsdispatcher:3.0.1'
+    annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:3.0.1'
+
 }

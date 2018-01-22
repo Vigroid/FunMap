@@ -11,5 +11,11 @@
     <string name="drawer_menu_about">About</string>
     <string name="drawer_menu_git">GitHub Repo</string>
     <string name="drawer_menu_author">Author</string>
-    <string name="et_search">Search Nearby</string>
+    <string name="et_search">Search</string>
+    <string name="tv_discover">Discover Nearby</string>
+    <string name="activity_permission_location_denied">Can\'t get current location! Permission Denied!</string>
+    <string name="slide">Discover Nearby!</string>
+    <string name="hide">Hide</string>
+    <string name="btn_picture">Picture</string>
+    <string name="btn_event">Event</string>
 </resources>
