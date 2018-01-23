@@ -1,6 +1,5 @@
-package me.vigroid.funmap;
+package me.vigroid.funmap.core.lbs;
 
-import android.*;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -13,7 +12,6 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -28,13 +26,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import me.vigroid.funmap.core.activity.ProxyActivity;
+import me.vigroid.funmap.core.R;
 import me.vigroid.funmap.core.app.ConfigKeys;
 import me.vigroid.funmap.core.app.FunMap;
-import me.vigroid.funmap.impl.EventDelegate;
+import me.vigroid.funmap.core.fragments.PermissionCheckerDelegate;
 
 /**
- * Created by yangv on 1/21/2018.
+ * Created by yangv on 1/22/2018.
  * Class to handle and initial map
  */
 
@@ -49,22 +47,17 @@ public class MapHandling implements OnMapReadyCallback {
     private static final int DEFAULT_ZOOM = 15;
     private Location mLastKnownLocation;
     private CameraPosition mCameraPosition;
-    private IRequestPermission mActivity;
+    private PermissionCheckerDelegate mDelegate;
 
-    MapHandling(IRequestPermission activity) {
-        this.mActivity = activity;
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient((Activity) mActivity);
+    public MapHandling(PermissionCheckerDelegate delegate) {
+        this.mDelegate = delegate;
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(delegate.getContext());
+
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        if (mActivity == null)
-            mActivity = FunMap.getConfiguration(ConfigKeys.ACTIVITY);
-
-        mActivity.requestPermission();
-        getCurrentLocation();
 
         if (googleMap != null) {
             googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
@@ -79,6 +72,8 @@ public class MapHandling implements OnMapReadyCallback {
                 }
             });
         }
+
+        mDelegate.getCurrentLocationWithCheck(this);
     }
 
     public void getCurrentLocation() {
@@ -86,14 +81,11 @@ public class MapHandling implements OnMapReadyCallback {
             return;
         }
 
-        if (mActivity == null)
-            mActivity = FunMap.getConfiguration(ConfigKeys.ACTIVITY);
-
-        if (ActivityCompat.checkSelfPermission((Context) mActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(mDelegate.getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
             Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
-            locationResult.addOnCompleteListener((Activity) mActivity, new OnCompleteListener<Location>() {
+            locationResult.addOnCompleteListener(mDelegate.getActivity(), new OnCompleteListener<Location>() {
                 @Override
                 public void onComplete(@NonNull Task<Location> task) {
                     if (task.isSuccessful()) {
@@ -112,7 +104,8 @@ public class MapHandling implements OnMapReadyCallback {
                 }
             });
         } else {
-            Toast.makeText((Context) mActivity, R.string.activity_permission_location_denied, Toast.LENGTH_LONG).show();
+            //TODO local
+            Toast.makeText(mDelegate.getContext(), "Denied", Toast.LENGTH_LONG).show();
             mMap.setMyLocationEnabled(false);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
             mLastKnownLocation = null;
@@ -121,10 +114,7 @@ public class MapHandling implements OnMapReadyCallback {
 
     private void beginChooseDialog(final Marker marker) {
 
-        if (mActivity == null)
-            mActivity = FunMap.getConfiguration(ConfigKeys.ACTIVITY);
-
-        final Dialog alertDialog = new Dialog((Context) mActivity);
+        final Dialog alertDialog = new Dialog(mDelegate.getContext());
         alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         alertDialog.setContentView(R.layout.dialog_choose_action);
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -139,7 +129,16 @@ public class MapHandling implements OnMapReadyCallback {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //((ProxyActivity)mActivity).start(new EventDelegate());
+                        //TODO start camera, if succ, change icon
+                        alertDialog.dismiss();
+                    }
+                });
+        alertDialog
+                .findViewById(R.id.btn_dialog_event)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //TODO start event delegate, if succ, change icon
                         alertDialog.dismiss();
                     }
                 });

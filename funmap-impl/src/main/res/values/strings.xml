@@ -14,8 +14,12 @@
     <string name="et_search">Search</string>
     <string name="tv_discover">Discover Nearby</string>
     <string name="activity_permission_location_denied">Can\'t get current location! Permission Denied!</string>
-    <string name="slide">Discover Nearby!</string>
+    <string name="slide">Explore Nearby!</string>
     <string name="hide">Hide</string>
     <string name="btn_picture">Picture</string>
     <string name="btn_event">Event</string>
+
+    <string name="np_cancel">Cancel</string>
+    <string name="np_set">Set</string>
+    <string name="np_title">Choose the range(miles)</string>
 </resources>

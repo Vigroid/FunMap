@@ -1,10 +1,11 @@
-package me.vigroid.funmap.impl;
+package me.vigroid.funmap.impl.event;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
 import me.vigroid.funmap.core.fragments.FunMapDelegate;
+import me.vigroid.funmap.impl.R;
 
 /**
  * Created by yangv on 1/20/2018.

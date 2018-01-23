@@ -16,31 +16,46 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="17dp"
+            android:background="@drawable/border"
             android:orientation="horizontal">
+
+            <com.joanzapata.iconify.widget.IconTextView
+                android:id="@+id/btn_nav_toggle"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/toolbar_height"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="{fa-bars}"
+                android:textColor="@color/colorPrimary"
+                android:textSize="22sp" />
+
 
             <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/et_search_view"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/toolbar_height"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="4"
-                android:gravity="left|center_vertical"
                 android:focusable="false"
-                android:paddingLeft="@dimen/padding"
+                android:gravity="left|center_vertical"
+                android:background="@android:color/transparent"
                 android:hint="@string/et_search"
-                android:background="@drawable/border"
+                android:paddingLeft="@dimen/padding"
                 android:paddingStart="@dimen/padding"
                 tools:ignore="RtlSymmetry" />
+
             <com.joanzapata.iconify.widget.IconTextView
                 android:layout_width="0dp"
                 android:layout_height="@dimen/toolbar_height"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="{fa-bell}"
-                android:textColor="@color/colorPrimary"
                 android:gravity="center"
-                android:layout_gravity="center"
-                android:textSize="18sp"/>
+                android:text="{fa-comments}"
+                android:textColor="@color/colorPrimary"
+                android:textSize="22sp" />
 
         </LinearLayout>
 

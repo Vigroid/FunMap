@@ -13,6 +13,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resValue "string", "google_maps_key", (project.findProperty("GOOGLE_MAPS_API_KEY") ?: "")
 
     }
 
@@ -28,7 +29,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:appcompat-v7:26.0.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
@@ -57,7 +58,7 @@ dependencies {
     api 'io.reactivex.rxjava2:rxandroid:2.0.1'
     api 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 
-    //font and icons
+    //Font and icons
     api 'com.joanzapata.iconify:android-iconify-ionicons:2.2.2'
     api 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2'
 
@@ -66,5 +67,12 @@ dependencies {
     //dynamic permission granting
     api 'com.github.hotchemi:permissionsdispatcher:3.0.1'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:3.0.1'
+
+    //Google maps
+    api 'com.google.android.gms:play-services:11.8.0'
+
+    //Slide up panel
+    api 'com.sothree.slidinguppanel:library:3.4.0'
+
 
 }

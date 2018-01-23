@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">funmapCore</string>
+    <string name="btn_picture">Picture</string>
+    <string name="btn_event">Event</string>
 </resources>
