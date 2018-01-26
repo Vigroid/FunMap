@@ -8,26 +8,28 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout
+        xmlns:sothree="http://schemas.android.com/apk/res-auto"
         android:id="@+id/maps_sl_discover"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom"
         sothree:umanoDragView="@+id/dragView"
-        sothree:umanoPanelHeight="68dp"
+        sothree:umanoPanelHeight="40dp"
         sothree:umanoParallaxOffset="100dp"
-        sothree:umanoScrollableView="@+id/list"
+        sothree:umanoScrollableView="@+id/rv_marks"
+        sothree:umanoFadeColor="@android:color/transparent"
         sothree:umanoShadowHeight="4dp">
 
         <include
             layout="@layout/app_bar_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
         <include
             layout="@layout/sliding_panel_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="265dp"/>
 
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 

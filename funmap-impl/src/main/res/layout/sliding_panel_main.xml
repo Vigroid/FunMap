@@ -10,8 +10,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/slide_up_height"
-        android:orientation="horizontal">
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:background="@color/colorAccent">
 
         <com.joanzapata.iconify.widget.IconTextView
             android:layout_width="0dp"
@@ -27,8 +28,7 @@
             android:layout_width="0dp"
             android:layout_weight="4"
             android:layout_height="match_parent"
-            android:background="@color/background"
-            android:gravity="left|center_vertical"
+            android:gravity="center"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:text="@string/slide"
             android:textSize="16sp" />
@@ -45,11 +45,11 @@
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/list"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_marks"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-    </ListView>
+    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

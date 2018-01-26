@@ -2,4 +2,11 @@
     <string name="app_name">funmapCore</string>
     <string name="btn_picture">Picture</string>
     <string name="btn_event">Event</string>
+    <string name="rational_location_message">This app needs permission to get your current location.</string>
+    <string name="rational_camera_write_message">This app needs permission to leverage camera and storage in order to take and save photos.</string>
+    <string name="rational_agree">Agree</string>
+    <string name="rational_disagree">Disagree</string>
+    <string name="location_permission_denied">Unable to proceed! Location permission denied.</string>
+    <string name="camera_permission_denied">Unable to proceed! Camera and Storage permission denied.</string>
+    <string name="cropping_error">Cropping error</string>
 </resources>

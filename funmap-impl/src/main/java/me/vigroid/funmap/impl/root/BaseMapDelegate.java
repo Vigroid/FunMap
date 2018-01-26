@@ -5,27 +5,32 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.Window;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ListView;
 import android.widget.NumberPicker;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.MapView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 import me.vigroid.funmap.core.fragments.FunMapDelegate;
-import me.vigroid.funmap.core.lbs.MapHandling;
+import me.vigroid.funmap.core.lbs.MapHandler;
+import me.vigroid.funmap.core.recycler.MarkerAdapter;
+import me.vigroid.funmap.core.recycler.MarkerBean;
 import me.vigroid.funmap.impl.R;
 import me.vigroid.funmap.impl.R2;
 
@@ -42,43 +47,17 @@ public class BaseMapDelegate extends FunMapDelegate {
     final int MIN_RANGE = 1;
     final int MAX_RANGE = 100;
 
-    List<String> your_array_list = Arrays.asList(
-            "This",
-            "Is",
-            "An",
-            "Example",
-            "ListView",
-            "That",
-            "You",
-            "Can",
-            "Scroll",
-            ".",
-            "It",
-            "Shows",
-            "How",
-            "Any",
-            "Scrollable",
-            "View",
-            "Can",
-            "Be",
-            "Included",
-            "As",
-            "A",
-            "Child",
-            "Of",
-            "SlidingUpPanelLayout"
-    );
-
-    MapHandling mMapHandling = null;
-
+    MapHandler mMapHandler = null;
 
     private int mRange = DEFAULT_RANGE;
+
+    MarkerAdapter mAdapter = null;
 
     @BindView(R2.id.maps_sl_discover)
     SlidingUpPanelLayout mSlideLayout = null;
 
-    @BindView(R2.id.list)
-    ListView lv = null;
+    @BindView(R2.id.rv_marks)
+    RecyclerView mRecyclerView = null;
 
     @BindView(R2.id.map)
     MapView mMapView = null;
@@ -88,7 +67,7 @@ public class BaseMapDelegate extends FunMapDelegate {
 
     @OnClick(R2.id.fab)
     void onClickFab() {
-        mMapHandling.getCurrentLocation();
+        mMapHandler.getCurrentLocation();
     }
 
     @OnClick(R2.id.btn_nav_toggle)
@@ -109,21 +88,42 @@ public class BaseMapDelegate extends FunMapDelegate {
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
 
-        mMapHandling = new MapHandling(this);
+        mMapHandler = new MapHandler(this);
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(BaseMapDelegate.this.getContext(), "onItemClick", Toast.LENGTH_SHORT).show();
-            }
-        });
+        //mSlideLayout.setAnchorPoint(0.4f);
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
-                this.getContext(),
-                android.R.layout.simple_list_item_1,
-                your_array_list);
+        MarkerBean bean1 = new MarkerBean("https://cnet4.cbsistatic.com/img/I-2dhG3a_A2B-LPW1vtnnnynxjk=/830x467/2017/10/16/53715bdb-d189-4aae-8e8b-f48cbe5d9512/google-pixel-2-0304-013.jpg", "Title A");
+        MarkerBean bean2 = new MarkerBean("http://blogs-images.forbes.com/gordonkelly/files/2017/06/Screenshot-2017-06-11-at-21.36.02.png", "Title B");
+        MarkerBean bean3 = new MarkerBean("https://cdn-images-1.medium.com/max/1600/1*LElUGGMInnIAl4QpKwuP1Q.png", "Title C");
 
-        lv.setAdapter(arrayAdapter);
+        List<MarkerBean> beans = new ArrayList<>();
+
+        beans.add(bean1);
+        beans.add(bean2);
+        beans.add(bean3);
+        beans.add(bean2);
+        beans.add(bean1);
+        beans.add(bean3);
+
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new MarkerAdapter(beans, this.getContext());
+
+        //Animation related code
+        ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(mAdapter);
+        scaleAdapter.setFirstOnly(false);
+        scaleAdapter.setDuration(800);
+        scaleAdapter.setInterpolator(new OvershootInterpolator(.5f));
+
+        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(scaleAdapter);
+        alphaAdapter.setFirstOnly(false);
+        alphaAdapter.setDuration(800);
+        alphaAdapter.setInterpolator(new OvershootInterpolator(.5f));
+
+        mRecyclerView.setAdapter(alphaAdapter);
     }
 
     @Nullable
@@ -132,7 +132,7 @@ public class BaseMapDelegate extends FunMapDelegate {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
         mMapView.onCreate(savedInstanceState);
-        mMapView.getMapAsync(mMapHandling);
+        mMapView.getMapAsync(mMapHandler);
 
         return view;
     }
@@ -188,8 +188,6 @@ public class BaseMapDelegate extends FunMapDelegate {
         }
     }
 
-
-
     private void showRangeFilterDialog() {
         final Dialog filterDialog = new Dialog(this.getContext());
         filterDialog.setContentView(R.layout.dialog_range_filter);
@@ -198,6 +196,9 @@ public class BaseMapDelegate extends FunMapDelegate {
         mNp.setMinValue(MIN_RANGE);
         mNp.setValue(mRange);
         mNp.setWrapSelectorWheel(false);
+        final Window window = filterDialog.getWindow();
+        if (window!=null) window.setWindowAnimations(me.vigroid.funmap.core.R.style.anim_panel_up_from_bottom);
+
         filterDialog.findViewById(R.id.btn_np_cancel)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override

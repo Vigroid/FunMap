@@ -19,7 +19,7 @@ public class MapsActivity extends ProxyActivity{
 
         if (savedInstanceState == null) {
             //load the root fragment into our container
-            loadRootFragment(me.vigroid.funmap.core.R.id.delegate_container, new BaseMapDelegate());
+            loadRootFragment(R.id.root_delegate_container, new BaseMapDelegate());
         }
     }
 }

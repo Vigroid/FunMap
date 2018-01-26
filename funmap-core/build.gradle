@@ -61,18 +61,22 @@ dependencies {
     //Font and icons
     api 'com.joanzapata.iconify:android-iconify-ionicons:2.2.2'
     api 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2'
-
     //Image Corping
     api 'com.github.yalantis:ucrop:2.2.1-native'
     //dynamic permission granting
     api 'com.github.hotchemi:permissionsdispatcher:3.0.1'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:3.0.1'
-
     //Google maps
     api 'com.google.android.gms:play-services:11.8.0'
-
     //Slide up panel
     api 'com.sothree.slidinguppanel:library:3.4.0'
+    //util compilation
+    api 'com.blankj:utilcode:1.7.1'
+    api 'com.google.maps.android:android-maps-utils:0.5+'
+    //get pic
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
 
-
+    //animation for recyclerview
+    compile 'jp.wasabeef:recyclerview-animators:2.2.3'
 }
