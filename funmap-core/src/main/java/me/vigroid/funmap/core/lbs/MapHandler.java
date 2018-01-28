@@ -18,17 +18,21 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.maps.android.ui.IconGenerator;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterItem;
+import com.google.maps.android.clustering.ClusterManager;
+
+import java.util.List;
 
 import me.vigroid.funmap.core.R;
 import me.vigroid.funmap.core.fragments.PermissionCheckerDelegate;
+import me.vigroid.funmap.core.recycler.MarkerBean;
 import me.vigroid.funmap.core.utils.callback.CallbackManager;
 import me.vigroid.funmap.core.utils.callback.CallbackType;
 import me.vigroid.funmap.core.utils.callback.IGlobalCallback;
@@ -38,8 +42,9 @@ import me.vigroid.funmap.core.utils.callback.IGlobalCallback;
  * Class to handle and initial map
  */
 
-public class MapHandler implements OnMapReadyCallback {
+public class MapHandler implements OnMapReadyCallback, ClusterManager.OnClusterClickListener<MarkerBean>,ClusterManager.OnClusterItemClickListener<MarkerBean>{
 
+    private ClusterManager<MarkerBean> mClusterManager;
     private static final String TAG = MapHandler.class.getSimpleName();
 
     //Map related
@@ -48,44 +53,51 @@ public class MapHandler implements OnMapReadyCallback {
     private final LatLng mDefaultLocation = new LatLng(-33.8523341, 151.2106085);
     private static final int DEFAULT_ZOOM = 15;
     private Location mLastKnownLocation;
-    private CameraPosition mCameraPosition;
     private PermissionCheckerDelegate mDelegate;
+    private List<MarkerBean> mBeans;
 
-    public MapHandler(PermissionCheckerDelegate delegate) {
+    public MapHandler(PermissionCheckerDelegate delegate, List<MarkerBean> beans) {
         this.mDelegate = delegate;
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(delegate.getContext());
-
+        this.mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(delegate.getContext());
+        this.mBeans = beans;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        if (googleMap != null) {
-            googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-                @Override
-                public void onMapLongClick(final LatLng latLng) {
-                    final MarkerOptions markerOpt = new MarkerOptions()
-                            .position(latLng)
-                            .title("New Marker");
-
-                    Marker currentMarker = mMap.addMarker(markerOpt);
-                    beginChooseDialog(currentMarker);
-
-                    CallbackManager.getInstance()
-                            .addCallback(CallbackType.ON_CROP, new IGlobalCallback<Uri>() {
-                                @Override
-                                public void executeCallback(Uri args) {
-                                    Toast.makeText(mDelegate.getContext(), args.toString(), Toast.LENGTH_SHORT).show();
-                                    IconGenerator iconGenerator = new IconGenerator(mDelegate.getContext());
-                                    iconGenerator.setTextAppearance(R.style.iconGenText);
-                                    iconGenerator.setStyle(IconGenerator.STYLE_BLUE);
-                                    addIcon(iconGenerator, "V", latLng);
-                                }
-                            });
-                }
-            });
+        if (googleMap == null) {
+            return;
         }
+        mClusterManager = new ClusterManager<>(mDelegate.getContext(), googleMap);
+        mClusterManager.setRenderer(new MarkerRender(mDelegate, mMap, mClusterManager));
+        googleMap.setOnCameraIdleListener(mClusterManager);
+
+        mClusterManager.addItems(mBeans);
+        mClusterManager.setOnClusterClickListener(this);
+        mClusterManager.setOnClusterItemClickListener(this);
+
+        googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(final LatLng latLng) {
+                final MarkerOptions markerOpt = new MarkerOptions()
+                        .position(latLng)
+                        .title("New Marker");
+
+                Marker currentMarker = mMap.addMarker(markerOpt);
+                beginChooseDialog(currentMarker);
+
+                CallbackManager.getInstance()
+                        .addCallback(CallbackType.ON_CROP, new IGlobalCallback<Uri>() {
+                            @Override
+                            public void executeCallback(Uri args) {
+                                Toast.makeText(mDelegate.getContext(), args.toString(), Toast.LENGTH_SHORT).show();
+                                addIcon(args, "V", latLng);
+                            }
+                        });
+            }
+        });
+
 
         mDelegate.getCurrentLocationWithCheck(this);
     }
@@ -164,11 +176,52 @@ public class MapHandler implements OnMapReadyCallback {
     }
 
     // add custom marker to map using icon generator class
-    private void addIcon(IconGenerator iconFactory, CharSequence text, LatLng position) {
-        MarkerOptions markerOptions = new MarkerOptions().
-                icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(text))).
-                position(position).
-                anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV());
-        mMap.addMarker(markerOptions);
+    private void addIcon(Uri args, CharSequence text, LatLng position) {
+        mBeans.add(new MarkerBean(args.toString(), text.toString(), position));
+        mClusterManager.clearItems();
+        mClusterManager.addItems(mBeans);
+
+        float currentZoom = mMap.getCameraPosition().zoom;
+        float targetZoom = (currentZoom + 1 <= mMap.getMaxZoomLevel()) ? currentZoom + 1 : currentZoom - 1;
+
+        try {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                    position, targetZoom));
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public boolean onClusterItemClick(MarkerBean bean) {
+        try {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                    bean.getPosition(), DEFAULT_ZOOM));
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onClusterClick(Cluster<MarkerBean> cluster) {
+        // Create the builder to collect all essential cluster items for the bounds.
+        LatLngBounds.Builder builder = LatLngBounds.builder();
+        for (ClusterItem item : cluster.getItems()) {
+            builder.include(item.getPosition());
+        }
+        // Get the LatLngBounds
+        final LatLngBounds bounds = builder.build();
+
+        // Animate camera to the bounds
+        try {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return true;
     }
 }

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import me.vigroid.funmap.core.R;
@@ -39,10 +40,12 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerHold
     }
 
     private List<MarkerBean> mBeans;
+    private List<MarkerBean> mBeansFiltered;
     private Context mContext;
 
-    public MarkerAdapter(List bean, Context context) {
-        this.mBeans = bean;
+    public MarkerAdapter(List beans, Context context) {
+        this.mBeans = beans;
+        this.mBeansFiltered = beans;
         this.mContext = context;
     }
 
@@ -55,7 +58,7 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerHold
 
     @Override
     public void onBindViewHolder(MarkerHolder holder, int position) {
-        final MarkerBean bean = mBeans.get(position);
+        final MarkerBean bean = mBeansFiltered.get(position);
         Glide.with(mContext)
                 .load(bean.imgUri)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -74,6 +77,23 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerHold
 
     @Override
     public int getItemCount() {
-        return mBeans.size();
+        return mBeansFiltered.size();
     }
+
+    public void filterSearch(CharSequence charSequence){
+        String filterString = charSequence.toString();
+        if (filterString.isEmpty()){
+           mBeansFiltered = mBeans;
+        } else {
+            List<MarkerBean> tempBeans = new ArrayList<>();
+            for(MarkerBean bean: mBeans){
+                if(bean.title.toLowerCase().contains(filterString.toLowerCase())){
+                    tempBeans.add(bean);
+                }
+            }
+            mBeansFiltered = tempBeans;
+        }
+        notifyDataSetChanged();
+    }
+
 }

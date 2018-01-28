@@ -1,4 +1,4 @@
-package me.vigroid.funmap.impl.root;
+package me.vigroid.funmap.impl.root.v;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -13,8 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.animation.OvershootInterpolator;
-import android.widget.ListView;
 import android.widget.NumberPicker;
 
 import com.google.android.gms.maps.MapView;
@@ -25,8 +23,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
-import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
+import butterknife.OnTextChanged;
 import me.vigroid.funmap.core.fragments.FunMapDelegate;
 import me.vigroid.funmap.core.lbs.MapHandler;
 import me.vigroid.funmap.core.recycler.MarkerAdapter;
@@ -80,6 +77,12 @@ public class BaseMapDelegate extends FunMapDelegate {
         showRangeFilterDialog();
     }
 
+    @OnTextChanged(value = R2.id.et_near_marker, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    void onNearMarkerTextChanged(CharSequence query){
+        if(mAdapter!=null)
+            mAdapter.filterSearch(query);
+    }
+
     @Override
     public Object setLayout() {
         return R.layout.delegate_base;
@@ -88,22 +91,28 @@ public class BaseMapDelegate extends FunMapDelegate {
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
 
-        mMapHandler = new MapHandler(this);
+        //TODO move to model level
+        MarkerBean bean1 = new MarkerBean("https://cnet4.cbsistatic.com/img/I-2dhG3a_A2B-LPW1vtnnnynxjk=/830x467/2017/10/16/53715bdb-d189-4aae-8e8b-f48cbe5d9512/google-pixel-2-0304-013.jpg", "Title A",32.996645, -96.795427);
+        MarkerBean bean2 = new MarkerBean("http://blogs-images.forbes.com/gordonkelly/files/2017/06/Screenshot-2017-06-11-at-21.36.02.png", "Title B", 32.996645, -96.785427);
+        MarkerBean bean3 = new MarkerBean("https://cdn-images-1.medium.com/max/1600/1*LElUGGMInnIAl4QpKwuP1Q.png", "Title C", 32.986645, -96.795427);
+        MarkerBean bean4 = new MarkerBean("https://cdn-images-1.medium.com/max/1600/1*LElUGGMInnIAl4QpKwuP1Q.png", "Title C", 32.998635, -96.795427);
+        MarkerBean bean5 = new MarkerBean("https://cdn-images-1.medium.com/max/1600/1*LElUGGMInnIAl4QpKwuP1Q.png", "Title C", 32.989625, -96.795427);
+        MarkerBean bean6 = new MarkerBean("http://blogs-images.forbes.com/gordonkelly/files/2017/06/Screenshot-2017-06-11-at-21.36.02.png", "Title B", 32.997645, -96.795427);
 
-        //mSlideLayout.setAnchorPoint(0.4f);
 
-        MarkerBean bean1 = new MarkerBean("https://cnet4.cbsistatic.com/img/I-2dhG3a_A2B-LPW1vtnnnynxjk=/830x467/2017/10/16/53715bdb-d189-4aae-8e8b-f48cbe5d9512/google-pixel-2-0304-013.jpg", "Title A");
-        MarkerBean bean2 = new MarkerBean("http://blogs-images.forbes.com/gordonkelly/files/2017/06/Screenshot-2017-06-11-at-21.36.02.png", "Title B");
-        MarkerBean bean3 = new MarkerBean("https://cdn-images-1.medium.com/max/1600/1*LElUGGMInnIAl4QpKwuP1Q.png", "Title C");
 
         List<MarkerBean> beans = new ArrayList<>();
 
         beans.add(bean1);
         beans.add(bean2);
         beans.add(bean3);
-        beans.add(bean2);
-        beans.add(bean1);
-        beans.add(bean3);
+        beans.add(bean4);
+        beans.add(bean5);
+        beans.add(bean6);
+
+        mMapHandler = new MapHandler(this, beans);
+
+        mSlideLayout.setAnchorPoint(0.8548f);
 
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -112,18 +121,7 @@ public class BaseMapDelegate extends FunMapDelegate {
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new MarkerAdapter(beans, this.getContext());
 
-        //Animation related code
-        ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(mAdapter);
-        scaleAdapter.setFirstOnly(false);
-        scaleAdapter.setDuration(800);
-        scaleAdapter.setInterpolator(new OvershootInterpolator(.5f));
-
-        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(scaleAdapter);
-        alphaAdapter.setFirstOnly(false);
-        alphaAdapter.setDuration(800);
-        alphaAdapter.setInterpolator(new OvershootInterpolator(.5f));
-
-        mRecyclerView.setAdapter(alphaAdapter);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Nullable

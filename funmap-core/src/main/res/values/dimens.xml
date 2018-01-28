@@ -8,4 +8,6 @@
     <dimen name="toolbar_height">40dp</dimen>
     <dimen name="padding">10dp</dimen>
     <dimen name="border_size">2dp</dimen>
+    <dimen name="custom_profile_image">50dp</dimen>
+    <dimen name="custom_profile_padding">2dp</dimen>
 </resources>

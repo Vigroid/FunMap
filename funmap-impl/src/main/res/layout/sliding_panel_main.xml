@@ -52,4 +52,13 @@
         android:layout_weight="1">
     </android.support.v7.widget.RecyclerView>
 
+    <EditText
+        android:id="@+id/et_near_marker"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/rv_marker_border"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:hint="@string/search_nearby"/>
+
 </LinearLayout>

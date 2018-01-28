@@ -5,7 +5,7 @@ import android.os.Bundle;
 import butterknife.ButterKnife;
 import me.vigroid.funmap.core.activity.ProxyActivity;
 import me.vigroid.funmap.core.app.FunMap;
-import me.vigroid.funmap.impl.root.BaseMapDelegate;
+import me.vigroid.funmap.impl.root.v.BaseMapDelegate;
 
 public class MapsActivity extends ProxyActivity{
 

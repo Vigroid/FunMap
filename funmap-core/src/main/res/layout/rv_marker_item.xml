@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--TODO add width and height into res-->
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="250dp"
     android:layout_height="215dp"
