@@ -1,4 +1,4 @@
-package me.vigroid.funmap.core.lbs;
+package me.vigroid.funmap.impl.lbs;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -20,9 +20,9 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
 
-import me.vigroid.funmap.core.R;
 import me.vigroid.funmap.core.fragments.PermissionCheckerDelegate;
-import me.vigroid.funmap.core.recycler.MarkerBean;
+import me.vigroid.funmap.impl.R;
+import me.vigroid.funmap.impl.bean.MarkerBean;
 
 /**
  * Created by yangv on 1/27/2018.
@@ -36,7 +36,7 @@ public class MarkerRender extends DefaultClusterRenderer<MarkerBean> {
     private final ImageView mImageView;
     private final int mDimension;
     private final Context mContext;
-    Bitmap icon;
+    private Bitmap icon;
 
     public MarkerRender(PermissionCheckerDelegate delegate, GoogleMap map, ClusterManager<MarkerBean> clusterManager) {
         super(delegate.getContext(), map, clusterManager);
@@ -67,8 +67,19 @@ public class MarkerRender extends DefaultClusterRenderer<MarkerBean> {
 
     @Override
     protected void onClusterItemRendered(MarkerBean clusterItem, final Marker marker) {
+
+        //TODO, event or pic diff color, change imguri to iconuri(get from ownid)
+        String[] iconUris = clusterItem.getImgUri();
+
+        if(iconUris.length == 0) {
+            mImageView.setImageResource(R.mipmap.ic_default_icon);
+            icon=mIconGenerator.makeIcon();
+            marker.setIcon(BitmapDescriptorFactory.fromBitmap(icon));
+            return;
+        }
+
         Glide.with(mContext)
-                .load(clusterItem.getImgUri())
+                .load(iconUris[0])
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .thumbnail(0.1f)

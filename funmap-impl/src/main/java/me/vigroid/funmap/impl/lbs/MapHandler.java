@@ -1,4 +1,4 @@
-package me.vigroid.funmap.core.lbs;
+package me.vigroid.funmap.impl.lbs;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -30,19 +30,21 @@ import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.List;
 
-import me.vigroid.funmap.core.R;
 import me.vigroid.funmap.core.fragments.PermissionCheckerDelegate;
-import me.vigroid.funmap.core.recycler.MarkerBean;
+import me.vigroid.funmap.core.lbs.IMapHandler;
 import me.vigroid.funmap.core.utils.callback.CallbackManager;
 import me.vigroid.funmap.core.utils.callback.CallbackType;
 import me.vigroid.funmap.core.utils.callback.IGlobalCallback;
+import me.vigroid.funmap.impl.R;
+import me.vigroid.funmap.impl.bean.MarkerBean;
+import me.vigroid.funmap.impl.bean.MarkerType;
 
 /**
  * Created by yangv on 1/22/2018.
  * Class to handle and initial map
  */
 
-public class MapHandler implements OnMapReadyCallback, ClusterManager.OnClusterClickListener<MarkerBean>,ClusterManager.OnClusterItemClickListener<MarkerBean>{
+public class MapHandler implements OnMapReadyCallback, ClusterManager.OnClusterClickListener<MarkerBean>, ClusterManager.OnClusterItemClickListener<MarkerBean>,IMapHandler {
 
     private ClusterManager<MarkerBean> mClusterManager;
     private static final String TAG = MapHandler.class.getSimpleName();
@@ -92,7 +94,7 @@ public class MapHandler implements OnMapReadyCallback, ClusterManager.OnClusterC
                             @Override
                             public void executeCallback(Uri args) {
                                 Toast.makeText(mDelegate.getContext(), args.toString(), Toast.LENGTH_SHORT).show();
-                                addIcon(args, "V", latLng);
+                                addIconMarker(args, "V", latLng);
                             }
                         });
             }
@@ -176,8 +178,9 @@ public class MapHandler implements OnMapReadyCallback, ClusterManager.OnClusterC
     }
 
     // add custom marker to map using icon generator class
-    private void addIcon(Uri args, CharSequence text, LatLng position) {
-        mBeans.add(new MarkerBean(args.toString(), text.toString(), position));
+    private void addIconMarker(Uri args, CharSequence text, LatLng position) {
+        //TODO change desc and type
+        mBeans.add(new MarkerBean(new String[]{args.toString()}, text.toString(), "heihei", position, MarkerType.PICS_MARKER, 0, false, false));
         mClusterManager.clearItems();
         mClusterManager.addItems(mBeans);
 
@@ -187,7 +190,7 @@ public class MapHandler implements OnMapReadyCallback, ClusterManager.OnClusterC
         try {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                     position, targetZoom));
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
@@ -198,7 +201,7 @@ public class MapHandler implements OnMapReadyCallback, ClusterManager.OnClusterC
         try {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                     bean.getPosition(), DEFAULT_ZOOM));
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 

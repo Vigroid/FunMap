@@ -14,7 +14,7 @@ import me.vigroid.funmap.core.R;
 import me.vigroid.funmap.core.camera.CameraImageBean;
 import me.vigroid.funmap.core.camera.FunMapCamera;
 import me.vigroid.funmap.core.camera.RequestCodes;
-import me.vigroid.funmap.core.lbs.MapHandler;
+import me.vigroid.funmap.core.lbs.IMapHandler;
 import me.vigroid.funmap.core.utils.callback.CallbackManager;
 import me.vigroid.funmap.core.utils.callback.CallbackType;
 import me.vigroid.funmap.core.utils.callback.IGlobalCallback;
@@ -44,11 +44,11 @@ public abstract class PermissionCheckerDelegate extends BaseDelegate {
     }
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    void getCurrentLocation(MapHandler mapHandler) {
+    void getCurrentLocation(IMapHandler mapHandler) {
         mapHandler.getCurrentLocation();
     }
 
-    public void getCurrentLocationWithCheck(MapHandler mapHandler) {
+    public void getCurrentLocationWithCheck(IMapHandler mapHandler) {
         PermissionCheckerDelegatePermissionsDispatcher.getCurrentLocationWithPermissionCheck(this, mapHandler);
     }
 

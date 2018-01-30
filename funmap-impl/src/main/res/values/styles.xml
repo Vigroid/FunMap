@@ -18,4 +18,33 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="dialog" parent="@android:style/Theme.Dialog">
+        <!--Flameless-->
+        <item name="android:windowFrame">@null</item>
+        <!--Floating-->
+        <item name="android:windowIsFloating">true</item>
+        <!--Transparent-->
+        <item name="android:windowIsTranslucent">false</item>
+        <!--No title-->
+        <item name="android:windowNoTitle">true</item>
+        <!--Background transparent-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--allow dim-->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!--Fullscreen-->
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="anim_panel_up_from_bottom" parent="@android:style/Animation">
+
+        <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
+
+    </style>
+
+    <style name="iconGenText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/shadowPrimary</item>
+    </style>
+
 </resources>

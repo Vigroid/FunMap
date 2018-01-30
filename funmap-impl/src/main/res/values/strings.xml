@@ -13,7 +13,6 @@
     <string name="drawer_menu_author">Author</string>
     <string name="et_search">Search</string>
     <string name="tv_discover">Discover Nearby</string>
-    <string name="activity_permission_location_denied">Can\'t get current location! Permission Denied!</string>
     <string name="slide">Explore Nearby!</string>
     <string name="hide">Hide</string>
     <string name="btn_picture">Picture</string>
@@ -23,4 +22,5 @@
     <string name="np_set">Set</string>
     <string name="np_title">Choose the range(miles)</string>
     <string name="search_nearby">Search Nearby</string>
+    <string name="cropping_error">Cropping error</string>
 </resources>
