@@ -22,7 +22,7 @@ import com.google.maps.android.ui.IconGenerator;
 
 import me.vigroid.funmap.core.fragments.PermissionCheckerDelegate;
 import me.vigroid.funmap.impl.R;
-import me.vigroid.funmap.impl.bean.MarkerBean;
+import me.vigroid.funmap.core.bean.MarkerBean;
 
 /**
  * Created by yangv on 1/27/2018.
@@ -69,7 +69,7 @@ public class MarkerRender extends DefaultClusterRenderer<MarkerBean> {
     protected void onClusterItemRendered(MarkerBean clusterItem, final Marker marker) {
 
         //TODO, event or pic diff color, change imguri to iconuri(get from ownid)
-        String[] iconUris = clusterItem.getImgUri();
+        String[] iconUris = clusterItem.imgUri;
 
         if(iconUris.length == 0) {
             mImageView.setImageResource(R.mipmap.ic_default_icon);

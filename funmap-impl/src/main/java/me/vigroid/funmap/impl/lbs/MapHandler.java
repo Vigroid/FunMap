@@ -36,15 +36,15 @@ import me.vigroid.funmap.core.utils.callback.CallbackManager;
 import me.vigroid.funmap.core.utils.callback.CallbackType;
 import me.vigroid.funmap.core.utils.callback.IGlobalCallback;
 import me.vigroid.funmap.impl.R;
-import me.vigroid.funmap.impl.bean.MarkerBean;
-import me.vigroid.funmap.impl.bean.MarkerType;
+import me.vigroid.funmap.core.bean.MarkerBean;
+import me.vigroid.funmap.core.bean.MarkerType;
 
 /**
  * Created by yangv on 1/22/2018.
  * Class to handle and initial map
  */
 
-public class MapHandler implements OnMapReadyCallback, ClusterManager.OnClusterClickListener<MarkerBean>, ClusterManager.OnClusterItemClickListener<MarkerBean>,IMapHandler {
+public class MapHandler implements OnMapReadyCallback, ClusterManager.OnClusterClickListener<MarkerBean>, ClusterManager.OnClusterItemClickListener<MarkerBean>, IMapHandler {
 
     private ClusterManager<MarkerBean> mClusterManager;
     private static final String TAG = MapHandler.class.getSimpleName();
@@ -180,7 +180,7 @@ public class MapHandler implements OnMapReadyCallback, ClusterManager.OnClusterC
     // add custom marker to map using icon generator class
     private void addIconMarker(Uri args, CharSequence text, LatLng position) {
         //TODO change desc and type
-        mBeans.add(new MarkerBean(new String[]{args.toString()}, text.toString(), "heihei", position, MarkerType.PICS_MARKER, 0, false, false));
+        mBeans.add(new MarkerBean(new String[]{args.toString()}, text.toString(), "heihei", position.latitude, position.longitude, MarkerType.PICS_MARKER, 0, false, false));
         mClusterManager.clearItems();
         mClusterManager.addItems(mBeans);
 

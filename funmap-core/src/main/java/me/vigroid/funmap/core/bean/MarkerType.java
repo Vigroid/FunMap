@@ -1,4 +1,4 @@
-package me.vigroid.funmap.impl.bean;
+package me.vigroid.funmap.core.bean;
 
 /**
  * Created by yangv on 1/29/2018.

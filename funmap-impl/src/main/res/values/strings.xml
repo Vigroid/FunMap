@@ -23,4 +23,6 @@
     <string name="np_title">Choose the range(miles)</string>
     <string name="search_nearby">Search Nearby</string>
     <string name="cropping_error">Cropping error</string>
+
+    <string name="refresh_error">Refresh error! Please check your network.</string>
 </resources>

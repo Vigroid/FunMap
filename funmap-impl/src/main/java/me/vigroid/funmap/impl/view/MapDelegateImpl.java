@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -23,7 +24,7 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import me.vigroid.funmap.impl.lbs.MapHandler;
 import me.vigroid.funmap.impl.adapter.MarkerAdapter;
-import me.vigroid.funmap.impl.bean.MarkerBean;
+import me.vigroid.funmap.core.bean.MarkerBean;
 import me.vigroid.funmap.impl.R;
 import me.vigroid.funmap.impl.R2;
 import me.vigroid.funmap.impl.base.BaseMapDelegate;
@@ -107,6 +108,17 @@ public class MapDelegateImpl extends BaseMapDelegate implements IMapDelegateView
         mBeans.clear();
         mBeans.addAll(beans);
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showRefreshError() {
+        Toast.makeText(this.getContext(), R.string.refresh_error, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDestroy() {
+        mPresenter.detachView();
+        super.onDestroy();
     }
 
     private void showRangeFilterDialog() {

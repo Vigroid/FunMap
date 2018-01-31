@@ -74,9 +74,13 @@ dependencies {
     api 'com.blankj:utilcode:1.7.1'
     api 'com.google.maps.android:android-maps-utils:0.5+'
     //get pic
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
+    api 'com.github.bumptech.glide:glide:3.7.0'
+    api 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
 //
 //    //animation for recyclerview
 //    compile 'jp.wasabeef:recyclerview-animators:2.2.3'
+    //json parser
+    api 'com.google.code.gson:gson:2.8.2'
+    api 'com.squareup.retrofit2:converter-gson:2.3.0'
+
 }

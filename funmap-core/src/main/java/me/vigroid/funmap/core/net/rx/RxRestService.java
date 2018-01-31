@@ -1,11 +1,14 @@
 package me.vigroid.funmap.core.net.rx;
 
+import java.util.List;
 import java.util.WeakHashMap;
 import io.reactivex.Observable;
+import io.reactivex.Single;
+import me.vigroid.funmap.core.bean.MarkerBean;
+import me.vigroid.funmap.core.response.MarkerResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.FieldMap;
@@ -29,6 +32,9 @@ public interface RxRestService {
 
     @GET
     Observable<String> get(@Url String url, @QueryMap WeakHashMap<String, Object> params);
+
+    @GET
+    Single<MarkerResponse> getMarkers(@Url String url, @QueryMap WeakHashMap<String, Object> params);
 
     @FormUrlEncoded
     @POST

@@ -19,7 +19,7 @@ public class MapsApplication extends Application{
     public void onCreate() {
         super.onCreate();
         FunMap.init(this)
-                .withApiHost("https://httpbin.org/")
+                .withApiHost("http://10.0.0.4/FunMap/api/")
                 .withIcon(new FontAwesomeModule())
                 .configure();
 

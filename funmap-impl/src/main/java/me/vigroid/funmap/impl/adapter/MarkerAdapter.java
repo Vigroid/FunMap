@@ -19,7 +19,7 @@ import java.util.List;
 
 import me.vigroid.funmap.core.utils.ui.ScrimUtil;
 import me.vigroid.funmap.impl.R;
-import me.vigroid.funmap.impl.bean.MarkerBean;
+import me.vigroid.funmap.core.bean.MarkerBean;
 
 /**
  * Created by yangv on 1/25/2018.
@@ -60,9 +60,9 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerHold
     public void onBindViewHolder(MarkerHolder holder, int position) {
         final MarkerBean bean = mBeansFiltered.get(position);
 
-        if (bean.getImgUri().length > 0)
+        if (bean.imgUri.length > 0)
             Glide.with(mContext)
-                    .load((bean.getImgUri())[0])
+                    .load((bean.imgUri)[0])
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .dontAnimate()
                     .centerCrop()

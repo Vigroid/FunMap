@@ -3,12 +3,16 @@ package me.vigroid.funmap.core.net.rx;
 import android.content.Context;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
+import me.vigroid.funmap.core.bean.MarkerBean;
 import me.vigroid.funmap.core.net.HttpMethod;
 import me.vigroid.funmap.core.net.RestCreator;
+import me.vigroid.funmap.core.response.MarkerResponse;
 import me.vigroid.funmap.core.ui.loader.FunMapLoader;
 import me.vigroid.funmap.core.ui.loader.LoaderStyle;
 import okhttp3.MediaType;
@@ -93,6 +97,10 @@ public class RxRestClient {
         return request(HttpMethod.GET);
     }
 
+    public Single<MarkerResponse> getMarkers() {
+        return RestCreator.getRxRestService().getMarkers(URL, PARAMS);
+    }
+
     public Observable<String> post() {
         if (BODY == null) {
             return request(HttpMethod.POST);
@@ -106,12 +114,12 @@ public class RxRestClient {
 
     public final Observable<String> put() {
         if (BODY == null) {
-            return  request(HttpMethod.PUT);
+            return request(HttpMethod.PUT);
         } else {
             if (!PARAMS.isEmpty()) {
                 throw new RuntimeException("params must be null!");
             }
-            return  request(HttpMethod.PUT_RAW);
+            return request(HttpMethod.PUT_RAW);
         }
     }
 
@@ -124,6 +132,6 @@ public class RxRestClient {
     }
 
     public final Observable<ResponseBody> download() {
-        return RestCreator.getRxRestService().download(URL,PARAMS);
+        return RestCreator.getRxRestService().download(URL, PARAMS);
     }
 }
