@@ -9,7 +9,15 @@ import me.vigroid.funmap.core.bean.MarkerBean;
  * View layer for map delegate, an interface
  */
 
-public interface IMapDelegateView{
-    void refreshMarker(List<MarkerBean> beans);
+public interface IMapDelegateView {
+
+    void refreshMarker();
+
+    void refreshRv();
+
+    void showMarkerDetailDelegate(MarkerBean bean);
+
+    void showMarkerOnMap(MarkerBean bean);
+
     void showRefreshError();
 }

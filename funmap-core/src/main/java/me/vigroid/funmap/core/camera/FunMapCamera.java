@@ -13,13 +13,17 @@ import me.vigroid.funmap.core.utils.file.FileUtil;
 
 public class FunMapCamera {
 
-//    public static Uri createCropFile(){
-//        return Uri.parse
-//                (FileUtil.createFile("crop_image",
-//                        FileUtil.getFileNameByTime("IMG","jpg")).getPath());
-//    }
+    public static Uri createCropFile(){
+        return Uri.parse
+                (FileUtil.createFile("crop_image",
+                        FileUtil.getFileNameByTime("IMG","jpg")).getPath());
+    }
 
     public static void start(PermissionCheckerDelegate delegate){
         new CameraHandler(delegate).takePhoto();
+    }
+
+    public static void startDialog(PermissionCheckerDelegate delegate){
+        new CameraHandler(delegate).beginCameraDialog();
     }
 }

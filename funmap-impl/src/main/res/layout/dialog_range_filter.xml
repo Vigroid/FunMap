@@ -27,16 +27,20 @@
         <Button
             android:id="@+id/btn_np_cancel"
             android:layout_width="0dp"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:padding="5dp"
             android:layout_marginRight="@dimen/fab_margin"
             android:text="@string/np_cancel" />
 
         <Button
             android:id="@+id/btn_np_set"
             android:layout_width="0dp"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:padding="5dp"
             android:text="@string/np_set" />
 
     </LinearLayout>

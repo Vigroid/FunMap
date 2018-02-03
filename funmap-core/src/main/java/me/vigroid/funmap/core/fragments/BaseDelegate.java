@@ -26,7 +26,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 public abstract class BaseDelegate extends Fragment implements ISupportFragment {
 
-    private final SupportFragmentDelegate DELEGATE = new SupportFragmentDelegate(this);
+    private final SupportFragmentDelegate mDelegate = new SupportFragmentDelegate(this);
     protected FragmentActivity mActivity = null;
 
     private Unbinder mUnBinder = null;
@@ -38,26 +38,26 @@ public abstract class BaseDelegate extends Fragment implements ISupportFragment 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        DELEGATE.onAttach((Activity) context);
-        mActivity = DELEGATE.getActivity();
+        mDelegate.onAttach((Activity) context);
+        mActivity = mDelegate.getActivity();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DELEGATE.onCreate(savedInstanceState);
+        mDelegate.onCreate(savedInstanceState);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        DELEGATE.onCreate(savedInstanceState);
+        mDelegate.onCreate(savedInstanceState);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        DELEGATE.onSaveInstanceState(outState);
+        mDelegate.onSaveInstanceState(outState);
     }
 
     @Nullable
@@ -86,123 +86,147 @@ public abstract class BaseDelegate extends Fragment implements ISupportFragment 
     @Override
     public void onResume() {
         super.onResume();
-        DELEGATE.onResume();
+        mDelegate.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        DELEGATE.onPause();
+        mDelegate.onPause();
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        DELEGATE.onHiddenChanged(hidden);
+        mDelegate.onHiddenChanged(hidden);
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        DELEGATE.setUserVisibleHint(isVisibleToUser);
+        mDelegate.setUserVisibleHint(isVisibleToUser);
     }
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         if (mUnBinder != null) {
             mUnBinder.unbind();
         }
+        mDelegate.onDestroyView();
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        mDelegate.onDestroy();
+        super.onDestroy();
     }
 
     @Override
     public SupportFragmentDelegate getSupportDelegate() {
-        return DELEGATE;
+        return mDelegate;
     }
 
     @Override
     public ExtraTransaction extraTransaction() {
-        return DELEGATE.extraTransaction();
+        return mDelegate.extraTransaction();
     }
 
     @Override
     public void enqueueAction(Runnable runnable) {
-        DELEGATE.enqueueAction(runnable);
+        mDelegate.enqueueAction(runnable);
     }
 
     @Override
     public void onEnterAnimationEnd(@Nullable Bundle savedInstanceState) {
-        DELEGATE.onEnterAnimationEnd(savedInstanceState);
+        mDelegate.onEnterAnimationEnd(savedInstanceState);
     }
 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
-        DELEGATE.onLazyInitView(savedInstanceState);
+        mDelegate.onLazyInitView(savedInstanceState);
     }
 
     @Override
     public void onSupportVisible() {
-        DELEGATE.onSupportVisible();
+        mDelegate.onSupportVisible();
     }
 
     @Override
     public void onSupportInvisible() {
-        DELEGATE.onSupportInvisible();
+        mDelegate.onSupportInvisible();
     }
 
     @Override
     public boolean isSupportVisible() {
-        return DELEGATE.isSupportVisible();
+        return mDelegate.isSupportVisible();
     }
 
     @Override
     public FragmentAnimator onCreateFragmentAnimator() {
-        return DELEGATE.onCreateFragmentAnimator();
+        return mDelegate.onCreateFragmentAnimator();
     }
 
     @Override
     public FragmentAnimator getFragmentAnimator() {
-        return DELEGATE.getFragmentAnimator();
+        return mDelegate.getFragmentAnimator();
     }
 
     @Override
     public void setFragmentAnimator(FragmentAnimator fragmentAnimator) {
-        DELEGATE.setFragmentAnimator(fragmentAnimator);
+        mDelegate.setFragmentAnimator(fragmentAnimator);
     }
 
     @Override
     public void setFragmentResult(int resultCode, Bundle bundle) {
-        DELEGATE.setFragmentResult(resultCode, bundle);
+        mDelegate.setFragmentResult(resultCode, bundle);
+    }
+
+    @Override
+    public void post(Runnable runnable) {
+        mDelegate.post(runnable);
     }
 
     @Override
     public void onFragmentResult(int requestCode, int resultCode, Bundle data) {
-        DELEGATE.onFragmentResult(requestCode, resultCode, data);
+        mDelegate.onFragmentResult(requestCode, resultCode, data);
     }
 
     @Override
     public void onNewBundle(Bundle args) {
-        DELEGATE.onNewBundle(args);
+        mDelegate.onNewBundle(args);
     }
 
     @Override
     public void putNewBundle(Bundle newBundle) {
-        DELEGATE.putNewBundle(newBundle);
+        mDelegate.putNewBundle(newBundle);
     }
 
     @Override
     public boolean onBackPressedSupport() {
-        return DELEGATE.onBackPressedSupport();
+        return mDelegate.onBackPressedSupport();
     }
 
     public void start(ISupportFragment toFragment) {
-        DELEGATE.start(toFragment);
+        mDelegate.start(toFragment);
     }
 
     /**
      * @param launchMode Same as Activity's LaunchMode.
      */
     public void start(ISupportFragment toFragment, @ISupportFragment.LaunchMode int launchMode) {
-        DELEGATE.start(toFragment, launchMode);
+        mDelegate.start(toFragment, launchMode);
     }
+
+    /**
+     * Launch an fragment for which you would like a result when it poped.
+     */
+    public void startForResult(ISupportFragment toFragment, int requestCode) {
+        mDelegate.startForResult(toFragment, requestCode);
+    }
+
+    public void pop() {
+        mDelegate.pop();
+    }
+
 }

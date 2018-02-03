@@ -8,7 +8,6 @@ import android.view.MotionEvent;
 import android.widget.Toast;
 
 import me.vigroid.funmap.core.R;
-import me.vigroid.funmap.core.fragments.FunMapDelegate;
 import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportActivity;
 import me.yokeyword.fragmentation.ISupportFragment;
@@ -90,11 +89,15 @@ public abstract class ProxyActivity extends AppCompatActivity implements ISuppor
 
     @Override
     public void onBackPressedSupport() {
-        if (System.currentTimeMillis() - TOUCH_TIME < WAIT_TIME) {
-            this.finish();
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            pop();
         } else {
-            TOUCH_TIME = System.currentTimeMillis();
-            Toast.makeText(this, "Double click to quit!", Toast.LENGTH_SHORT).show();
+            if (System.currentTimeMillis() - TOUCH_TIME < WAIT_TIME) {
+                finish();
+            } else {
+                TOUCH_TIME = System.currentTimeMillis();
+                Toast.makeText(this, R.string.press_again_exit, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -112,5 +115,14 @@ public abstract class ProxyActivity extends AppCompatActivity implements ISuppor
      */
     public void start(ISupportFragment toFragment, @ISupportFragment.LaunchMode int launchMode) {
         mDelegate.start(toFragment, launchMode);
+    }
+
+    @Override
+    public void post(Runnable runnable) {
+        mDelegate.post(runnable);
+    }
+
+    public void pop() {
+        mDelegate.pop();
     }
 }

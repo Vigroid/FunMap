@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
@@ -18,12 +21,19 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
-import me.vigroid.funmap.impl.lbs.MapHandler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.subjects.PublishSubject;
+import me.vigroid.funmap.core.lbs.IMapHandler;
+import me.vigroid.funmap.core.utils.dimen.DimenUtil;
 import me.vigroid.funmap.impl.adapter.MarkerAdapter;
+import me.vigroid.funmap.impl.filter.MarkerFilterTypes;
+import me.vigroid.funmap.impl.lbs.MapHandler;
 import me.vigroid.funmap.core.bean.MarkerBean;
 import me.vigroid.funmap.impl.R;
 import me.vigroid.funmap.impl.R2;
@@ -36,20 +46,19 @@ import me.vigroid.funmap.impl.presenter.MapPresenterImpl;
  * The root element in the activy, contains a map and a slide up panel
  */
 
-public class MapDelegateImpl extends BaseMapDelegate implements IMapDelegateView{
+public class MapDelegate extends BaseMapDelegate implements IMapDelegateView {
 
-    final String TAG = MapDelegateImpl.class.getSimpleName();
+    final String TAG = MapDelegate.class.getSimpleName();
 
     final int DEFAULT_RANGE = 50;
     final int MIN_RANGE = 1;
     final int MAX_RANGE = 100;
     final float ANCHOR_POINT = 0.8548f;
+    final int DEBOUNCE_INTERVAL = 400;
 
-    IMapPresenter mPresenter;
-    MapHandler mMapHandler = null;
     int mRange = DEFAULT_RANGE;
-    List<MarkerBean> mBeans = new ArrayList<>();
     MarkerAdapter mAdapter = null;
+    int savedPosition = 0;
 
     @BindView(R2.id.maps_sl_discover)
     SlidingUpPanelLayout mSlideLayout = null;
@@ -59,6 +68,8 @@ public class MapDelegateImpl extends BaseMapDelegate implements IMapDelegateView
 
     @BindView(R2.id.drawer_layout)
     DrawerLayout mDrawerLayout = null;
+    private IMapPresenter mPresenter = new MapPresenterImpl(this);
+    private IMapHandler mMapHandler;
 
     @OnClick(R2.id.fab)
     void onClickFab() {
@@ -76,8 +87,8 @@ public class MapDelegateImpl extends BaseMapDelegate implements IMapDelegateView
     }
 
     @OnTextChanged(value = R2.id.et_near_marker, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
-    void onNearMarkerTextChanged(CharSequence query) {
-        if (mAdapter != null) mAdapter.filterSearch(query);
+    void onMarkerSearchTextChanged(CharSequence query) {
+        mPublishSubject.onNext(query.toString());
     }
 
     @Override
@@ -87,27 +98,58 @@ public class MapDelegateImpl extends BaseMapDelegate implements IMapDelegateView
 
     @Override
     public void onBindView(@Nullable Bundle saveInstanceState, View rootView) {
-
-        mMapHandler = new MapHandler(this, mBeans);
+        mPresenter.loadMarkers();
+        mMapHandler = new MapHandler(this, mPresenter);
         mMapView.getMapAsync(mMapHandler);
 
         mSlideLayout.setAnchorPoint(ANCHOR_POINT);
-
-        LinearLayoutManager layoutManager
+        final LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new MarkerAdapter(mBeans, this.getContext());
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this.getContext(), DividerItemDecoration.HORIZONTAL));
+        mAdapter = new MarkerAdapter(this.getContext(), mPresenter);
         mRecyclerView.setAdapter(mAdapter);
+        new LinearSnapHelper().attachToRecyclerView(mRecyclerView);
+        mRecyclerView.addOnScrollListener(new OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                int currPosition = layoutManager.findFirstCompletelyVisibleItemPosition();
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && currPosition >= 0 && currPosition != savedPosition) {
+                    mPresenter.getMarkerAtPostion(currPosition);
+                    savedPosition = currPosition;
+                }
+            }
+        });
 
-        mPresenter = new MapPresenterImpl(this);
-        mPresenter.loadMarkers();
+        mPublishSubject.debounce(DEBOUNCE_INTERVAL, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        mPresenter.filterMarkers(MarkerFilterTypes.KEYWORD, s);
+                    }
+                });
     }
 
     @Override
-    public void refreshMarker(List<MarkerBean> beans) {
-        mBeans.clear();
-        mBeans.addAll(beans);
+    public void refreshMarker() {
+        mMapHandler.notifyMarkersChanged();
+    }
+
+    @Override
+    public void refreshRv() {
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showMarkerDetailDelegate(MarkerBean bean) {
+        //TODO start marker detail delegate
+        Toast.makeText(this.getContext(), bean.title, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showMarkerOnMap(MarkerBean bean) {
+        mMapHandler.animateCamera(bean.getPosition());
     }
 
     @Override
@@ -122,17 +164,13 @@ public class MapDelegateImpl extends BaseMapDelegate implements IMapDelegateView
     }
 
     private void showRangeFilterDialog() {
-        final Dialog filterDialog = new Dialog(this.getContext());
+        final Dialog filterDialog = new Dialog(this.getContext(), R.style.dialog);
         filterDialog.setContentView(R.layout.dialog_range_filter);
         final NumberPicker mNp = filterDialog.findViewById(R.id.np_range);
         mNp.setMaxValue(MAX_RANGE);
         mNp.setMinValue(MIN_RANGE);
         mNp.setValue(mRange);
         mNp.setWrapSelectorWheel(false);
-        final Window window = filterDialog.getWindow();
-        if (window != null)
-            window.setWindowAnimations(R.style.anim_panel_up_from_bottom);
-
         filterDialog.findViewById(R.id.btn_np_cancel)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -150,11 +188,12 @@ public class MapDelegateImpl extends BaseMapDelegate implements IMapDelegateView
                     }
                 });
         filterDialog.show();
+        if (filterDialog.getWindow() != null)
+            filterDialog.getWindow().setLayout((6 * DimenUtil.getScreenWidth()) / 7, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     @Override
     public boolean onBackPressedSupport() {
-        Log.d(TAG, "back");
         if (mDrawerLayout.isDrawerVisible(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
             return true;
@@ -162,9 +201,16 @@ public class MapDelegateImpl extends BaseMapDelegate implements IMapDelegateView
                 (mSlideLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || mSlideLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
             mSlideLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
             return true;
-        } else {
+        } else{
             return super.onBackPressedSupport();
         }
     }
 
+    @Override
+    public void onFragmentResult(int requestCode, int resultCode, Bundle data) {
+        super.onFragmentResult(requestCode, resultCode, data);
+        if (requestCode == MapHandler.ON_CREATE_EVENT && resultCode == RESULT_OK && data != null) {
+            Toast.makeText(this.getContext(), data.getString(MapHandler.KEY_RESULT_BEAN), Toast.LENGTH_SHORT).show();
+        }
+    }
 }

@@ -25,4 +25,20 @@
     <string name="cropping_error">Cropping error</string>
 
     <string name="refresh_error">Refresh error! Please check your network.</string>
+    <string name="fa_times">{fa-times}</string>
+    <string name="fa_thumbs_o_up">{fa-thumbs-o-up}</string>
+    <string name="fa_star_o">{fa-star-o}</string>
+    <string name="fa_thumbs_up">{fa-thumbs-up}</string>
+    <string name="fa_star">{fa-star}</string>
+    <string name="confirm">Confirm</string>
+    <string name="access_control">Access control</string>
+    <string name="time_period">Time Period (Local Time)</string>
+    <string name="every_day">Every Day</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+
+    <string-array name="access_control_array">
+        <item>Private</item>
+        <item>Public</item>
+    </string-array>
 </resources>

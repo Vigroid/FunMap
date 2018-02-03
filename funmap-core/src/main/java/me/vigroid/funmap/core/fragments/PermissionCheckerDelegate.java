@@ -43,6 +43,16 @@ public abstract class PermissionCheckerDelegate extends BaseDelegate {
         PermissionCheckerDelegatePermissionsDispatcher.startCameraWithPermissionCheck(this);
     }
 
+    //not real code for camera start, just for annotation process
+    @NeedsPermission({Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    void startCameraDialog() {
+        FunMapCamera.startDialog(this);
+    }
+
+    public void startCameraDialogWithCheck(){
+        PermissionCheckerDelegatePermissionsDispatcher.startCameraDialogWithPermissionCheck(this);
+    }
+
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     void getCurrentLocation(IMapHandler mapHandler) {
         mapHandler.getCurrentLocation();
@@ -135,6 +145,16 @@ public abstract class PermissionCheckerDelegate extends BaseDelegate {
                     UCrop.of(resultUri, resultUri)
                             .withMaxResultSize(1080, 1920)
                             .start(getContext(), this);
+                    break;
+                case RequestCodes.PICK_PHOTO:
+                    if (data!=null){
+                        final Uri pickPath = data.getData();
+                        //a path to store the cropped image
+                        final String pickCropPath = FunMapCamera.createCropFile().getPath();
+                        UCrop.of(pickPath,Uri.parse(pickCropPath))
+                                .withMaxResultSize(400,400)
+                                .start(getContext(),this);
+                    }
                     break;
                 case RequestCodes.CROP_PHOTO:
                     final Uri cropUri = UCrop.getOutput(data);

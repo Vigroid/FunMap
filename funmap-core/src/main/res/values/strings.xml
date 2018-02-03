@@ -9,4 +9,10 @@
     <string name="location_permission_denied">Unable to proceed! Location permission denied.</string>
     <string name="camera_permission_denied">Unable to proceed! Camera and Storage permission denied.</string>
     <string name="cropping_error">Cropping error</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="local_storage">Local Storage</string>
+    <string name="image_existed_warning">Image already selected</string>
+    <string name="press_again_exit">Press again to exit</string>
 </resources>

@@ -1,6 +1,8 @@
 package me.vigroid.funmap.impl.model;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
+import me.vigroid.funmap.core.bean.MarkerBean;
 import me.vigroid.funmap.core.net.rx.RxRestClient;
 import me.vigroid.funmap.core.response.MarkerResponse;
 
@@ -19,5 +21,14 @@ public class MapModelImpl implements IMapModel {
                 .build()
                 .getMarkers();
 
+    }
+
+    @Override
+    public Observable<String> addPicMarker(MarkerBean bean) {
+//        return RxRestClient.builder()
+//                .url("upload")
+//                .build()
+//                .upload();
+        return null;
     }
 }

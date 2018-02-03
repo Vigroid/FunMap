@@ -5,7 +5,7 @@ import android.os.Bundle;
 import butterknife.ButterKnife;
 import me.vigroid.funmap.core.activity.ProxyActivity;
 import me.vigroid.funmap.core.app.FunMap;
-import me.vigroid.funmap.impl.view.MapDelegateImpl;
+import me.vigroid.funmap.impl.view.MapDelegate;
 
 public class MapsActivity extends ProxyActivity{
 
@@ -19,7 +19,7 @@ public class MapsActivity extends ProxyActivity{
 
         if (savedInstanceState == null) {
             //load the root fragment into our container
-            loadRootFragment(R.id.root_delegate_container, new MapDelegateImpl());
+            loadRootFragment(R.id.root_delegate_container, new MapDelegate());
         }
     }
 }

@@ -16,21 +16,24 @@ public class MarkerBean implements ClusterItem {
     public String title;
     public String description;
     public int type;
-    public boolean isLiked;
     public boolean isSaved;
-    public String[] imgUri;
-    //TODO expire time
+    public String[] imgUris;
+    public String userName;
+    public String iconUri;
+    public long unixTime;
 
-    public MarkerBean(String[] imgUri, String title, String description, double lat, double lng, int type, int ownerId, boolean isLiked, boolean isSaved) {
-        this.imgUri = imgUri;
-        this.title = title;
-        this.description = description;
+    public MarkerBean(int ownerId, double lat, double lng, String title, String description, int type, boolean isSaved, String[] imgUris, String userName, String iconUri, long unixTime) {
+        this.ownerId = ownerId;
         this.lat = lat;
         this.lng = lng;
+        this.title = title;
+        this.description = description;
         this.type = type;
-        this.ownerId = ownerId;
-        this.isLiked = isLiked;
         this.isSaved = isSaved;
+        this.imgUris = imgUris;
+        this.userName = userName;
+        this.iconUri = iconUri;
+        this.unixTime = unixTime;
     }
 
     @Override

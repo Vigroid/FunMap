@@ -14,88 +14,82 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import me.vigroid.funmap.core.utils.ui.ScrimUtil;
 import me.vigroid.funmap.impl.R;
-import me.vigroid.funmap.core.bean.MarkerBean;
+import me.vigroid.funmap.impl.presenter.IMapPresenter;
+import me.vigroid.funmap.impl.view.IMarkerItemView;
 
 /**
- * Created by yangv on 1/25/2018.
- * Adapter for the rv
+ * Created by yangv on 1/31/2018.
+ * Adpater for rv
  */
 
 public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerHolder> {
 
-    class MarkerHolder extends RecyclerView.ViewHolder {
-
-        private ImageView mImage;
-        private TextView mTitle;
-
-        MarkerHolder(View itemView) {
-            super(itemView);
-            mImage = itemView.findViewById(R.id.rv_item_img);
-            mTitle = itemView.findViewById(R.id.rv_item_txt);
-        }
-    }
-
-    private List<MarkerBean> mBeans;
-    private List<MarkerBean> mBeansFiltered;
     private Context mContext;
+    private IMapPresenter mPresenter;
 
-    public MarkerAdapter(List<MarkerBean> beans, Context context) {
-        this.mBeans = beans;
-        this.mBeansFiltered = beans;
-        this.mContext = context;
+    public MarkerAdapter(Context mContext, IMapPresenter mPresenter) {
+        this.mContext = mContext;
+        this.mPresenter = mPresenter;
     }
 
     @Override
     public MarkerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_marker_item, parent, false);
-        return new MarkerHolder(itemView);
+        return new MarkerAdapter.MarkerHolder(mPresenter, itemView);
     }
 
     @Override
     public void onBindViewHolder(MarkerHolder holder, int position) {
-        final MarkerBean bean = mBeansFiltered.get(position);
-
-        if (bean.imgUri.length > 0)
-            Glide.with(mContext)
-                    .load((bean.imgUri)[0])
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .dontAnimate()
-                    .centerCrop()
-                    .into(holder.mImage);
-        holder.mTitle.setText(bean.getTitle());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            holder.mTitle.setBackground(
-                    ScrimUtil.makeCubicGradientScrimDrawable(
-                            Color.BLACK, 2, Gravity.BOTTOM
-                    )
-            );
-        }
+        mPresenter.onBindMarkerViewAtPosition(holder, position);
     }
 
     @Override
     public int getItemCount() {
-        return mBeansFiltered.size();
+        return mPresenter.getMarkersCount();
     }
 
-    public void filterSearch(CharSequence charSequence) {
-        String filterString = charSequence.toString();
-        if (filterString.isEmpty()) {
-            mBeansFiltered = mBeans;
-        } else {
-            List<MarkerBean> tempBeans = new ArrayList<>();
-            for (MarkerBean bean : mBeans) {
-                if (bean.getTitle().toLowerCase().contains(filterString.toLowerCase())) {
-                    tempBeans.add(bean);
+    public class MarkerHolder extends RecyclerView.ViewHolder implements IMarkerItemView {
+
+        private ImageView mImage;
+        private TextView mTitle;
+
+        MarkerHolder(final IMapPresenter presenter, View itemView) {
+            super(itemView);
+            mImage = itemView.findViewById(R.id.rv_item_img);
+            mTitle = itemView.findViewById(R.id.rv_item_txt);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    presenter.onClickListenerAtPosition(getAdapterPosition());
                 }
-            }
-            mBeansFiltered = tempBeans;
+            });
         }
-        notifyDataSetChanged();
+
+        @Override
+        public void setImg(String[] imgUris) {
+            if (imgUris.length > 0)
+                Glide.with(mContext)
+                        .load(imgUris[0])
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .dontAnimate()
+                        .centerCrop()
+                        .into(mImage);
+        }
+
+        @Override
+        public void setTitle(String title) {
+            mTitle.setText(title);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mTitle.setBackground(
+                        ScrimUtil.makeCubicGradientScrimDrawable(
+                                Color.BLACK, 2, Gravity.BOTTOM
+                        )
+                );
+            }
+        }
     }
 
 }

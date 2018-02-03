@@ -26,37 +26,11 @@
 
     </FrameLayout>
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:orientation="horizontal">
-
-        <com.joanzapata.iconify.widget.IconTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="{fa-times}"
-            android:textSize="20sp" />
-
-        <com.joanzapata.iconify.widget.IconTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="{fa-thumbs-o-up}"
-            android:textSize="20sp" />
-
-        <com.joanzapata.iconify.widget.IconTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="{fa-star-o}"
-            android:textSize="20sp" />
-    </LinearLayout>
+        android:text="By abc"
+        android:textSize="20sp">
+    </TextView>
 
 </LinearLayout>

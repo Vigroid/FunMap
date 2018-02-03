@@ -20,6 +20,7 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
 
+import me.vigroid.funmap.core.bean.MarkerType;
 import me.vigroid.funmap.core.fragments.PermissionCheckerDelegate;
 import me.vigroid.funmap.impl.R;
 import me.vigroid.funmap.core.bean.MarkerBean;
@@ -42,7 +43,7 @@ public class MarkerRender extends DefaultClusterRenderer<MarkerBean> {
         super(delegate.getContext(), map, clusterManager);
         this.mContext = delegate.getContext();
 
-        this.mIconGenerator  = new IconGenerator(mContext);
+        this.mIconGenerator = new IconGenerator(mContext);
         this.mClusterIconGenerator = new IconGenerator(mContext);
 
         View multiProfile = delegate.getLayoutInflater().inflate(R.layout.multi_profile, null);
@@ -66,26 +67,28 @@ public class MarkerRender extends DefaultClusterRenderer<MarkerBean> {
     }
 
     @Override
-    protected void onClusterItemRendered(MarkerBean clusterItem, final Marker marker) {
+    protected void onClusterItemRendered(final MarkerBean clusterItem, final Marker marker) {
 
-        //TODO, event or pic diff color, change imguri to iconuri(get from ownid)
-        String[] iconUris = clusterItem.imgUri;
+        //TODO change imguri to iconuri(get from ownid)
+        String iconUri = clusterItem.iconUri;
 
-        if(iconUris.length == 0) {
+        if (iconUri== null || iconUri.isEmpty()) {
             mImageView.setImageResource(R.mipmap.ic_default_icon);
-            icon=mIconGenerator.makeIcon();
+            icon = mIconGenerator.makeIcon();
             marker.setIcon(BitmapDescriptorFactory.fromBitmap(icon));
             return;
         }
 
         Glide.with(mContext)
-                .load(iconUris[0])
+                .load(iconUri)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .thumbnail(0.1f)
                 .into(new SimpleTarget<GlideDrawable>() {
                     @Override
                     public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                        if (clusterItem.type == MarkerType.PICS_MARKER) mIconGenerator.setStyle(IconGenerator.STYLE_BLUE);
+                        else mIconGenerator.setStyle(IconGenerator.STYLE_WHITE);
                         mImageView.setImageDrawable(resource);
                         icon = mIconGenerator.makeIcon();
                         marker.setIcon(BitmapDescriptorFactory.fromBitmap(icon));

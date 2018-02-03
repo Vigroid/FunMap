@@ -17,6 +17,7 @@ import com.blankj.utilcode.util.FileUtils;
 
 import java.io.File;
 
+import me.vigroid.funmap.core.R;
 import me.vigroid.funmap.core.fragments.PermissionCheckerDelegate;
 import me.vigroid.funmap.core.utils.file.FileUtil;
 
@@ -25,12 +26,36 @@ import me.vigroid.funmap.core.utils.file.FileUtil;
  * handle the camera event
  */
 
-public class CameraHandler{
+public class CameraHandler implements View.OnClickListener{
 
+    private final AlertDialog DIALOG;
     private final PermissionCheckerDelegate DELEGATE;
 
     public CameraHandler( PermissionCheckerDelegate delegate) {
         this.DELEGATE = delegate;
+        DIALOG = new AlertDialog.Builder(delegate.getContext()).create();
+    }
+
+    final void beginCameraDialog(){
+        DIALOG.show();
+        final Window window = DIALOG.getWindow();
+        if (window!=null){
+            window.setContentView(R.layout.dialog_camera_panel);
+            window.setGravity(Gravity.BOTTOM);
+            window.setWindowAnimations(R.style.anim_panel_up_from_bottom);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            final WindowManager.LayoutParams params = window.getAttributes();
+            params.width = WindowManager.LayoutParams.MATCH_PARENT;
+            params.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            params.dimAmount = 0.5f;
+            window.setAttributes(params);
+
+            window.findViewById(R.id.photodialog_btn_cancel).setOnClickListener(this);
+            window.findViewById(R.id.photodialog_btn_take).setOnClickListener(this);
+            window.findViewById(R.id.photodialog_btn_native).setOnClickListener(this);
+
+        }
     }
 
     private String getPhotoName(){
@@ -63,5 +88,29 @@ public class CameraHandler{
         DELEGATE.startActivityForResult
                 (intent,RequestCodes.TAKE_PHOTO);
 
+    }
+
+    private void pickPhoto(){
+        final Intent intent=new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        DELEGATE.startActivityForResult
+                (Intent.createChooser(intent,"Get photo"),
+                        RequestCodes.PICK_PHOTO);
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        if (id == R.id.photodialog_btn_cancel){
+            DIALOG.cancel();
+        }else if (id == R.id.photodialog_btn_take){
+            takePhoto();
+            DIALOG.cancel();
+        }else if (id == R.id.photodialog_btn_native){
+            pickPhoto();
+            DIALOG.cancel();
+        }
     }
 }
