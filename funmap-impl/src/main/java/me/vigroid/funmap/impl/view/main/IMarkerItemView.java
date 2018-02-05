@@ -1,4 +1,4 @@
-package me.vigroid.funmap.impl.view;
+package me.vigroid.funmap.impl.view.main;
 
 /**
  * Created by yangv on 1/31/2018.

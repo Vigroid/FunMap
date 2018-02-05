@@ -1,4 +1,4 @@
-package me.vigroid.funmap.impl.view;
+package me.vigroid.funmap.impl.view.main;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package me.vigroid.funmap.impl.presenter;
+package me.vigroid.funmap.impl.presenter.main;
 
 import com.google.maps.android.clustering.ClusterManager;
 
@@ -14,10 +14,10 @@ import me.vigroid.funmap.core.bean.MarkerBean;
 import me.vigroid.funmap.core.bean.MarkerType;
 import me.vigroid.funmap.core.response.MarkersResponse;
 import me.vigroid.funmap.impl.filter.MarkerFilterTypes;
-import me.vigroid.funmap.impl.model.IMapModel;
-import me.vigroid.funmap.impl.model.MapModelImpl;
-import me.vigroid.funmap.impl.view.IMapDelegateView;
-import me.vigroid.funmap.impl.view.IMarkerItemView;
+import me.vigroid.funmap.impl.model.main.IMapModel;
+import me.vigroid.funmap.impl.model.main.MapModelImpl;
+import me.vigroid.funmap.impl.view.main.IMapDelegateView;
+import me.vigroid.funmap.impl.view.main.IMarkerItemView;
 
 /**
  * Created by yangv on 1/30/2018.
@@ -100,12 +100,10 @@ public class MapPresenterImpl implements IMapPresenter {
     }
 
     @Override
-    public void addPicMarkers(ClusterManager<MarkerBean> clusterManager, MarkerBean bean) {
-        //TODO upload beans to server and get result
-        if (mapModel.addPicMarker(bean) == null) {
-            mBeans.add(bean);
-            clusterManager.addItem(bean);
-        }
+    public void addMarker(ClusterManager<MarkerBean> clusterManager, MarkerBean bean) {
+        mBeans.add(bean);
+        if (mBeans!=mBeansFiltered) mBeansFiltered.add(bean);
+        clusterManager.addItem(bean);
         mapView.refreshRv();
         mapView.refreshMarker();
     }

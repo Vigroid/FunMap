@@ -1,4 +1,4 @@
-package me.vigroid.funmap.impl.model;
+package me.vigroid.funmap.impl.model.main;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -13,7 +13,5 @@ import me.vigroid.funmap.core.response.MarkersResponse;
 public interface IMapModel {
 
     Single<MarkersResponse> fetchMarkers();
-
-    Observable<String> addPicMarker(MarkerBean bean);
 
 }

@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -29,14 +28,11 @@ import com.google.maps.android.clustering.ClusterManager;
 
 import me.vigroid.funmap.core.fragments.PermissionCheckerDelegate;
 import me.vigroid.funmap.core.lbs.IMapHandler;
-import me.vigroid.funmap.core.utils.callback.CallbackManager;
-import me.vigroid.funmap.core.utils.callback.CallbackType;
-import me.vigroid.funmap.core.utils.callback.IGlobalCallback;
 import me.vigroid.funmap.impl.R;
 import me.vigroid.funmap.core.bean.MarkerBean;
-import me.vigroid.funmap.core.bean.MarkerType;
-import me.vigroid.funmap.impl.presenter.IMapPresenter;
-import me.vigroid.funmap.impl.view.CreateEventDelegate;
+import me.vigroid.funmap.impl.presenter.main.IMapPresenter;
+import me.vigroid.funmap.impl.view.creart_event.CreateEventDelegate;
+import me.vigroid.funmap.impl.view.create_pic.CreatePicDelegate;
 
 /**
  * Created by yangv on 1/22/2018.
@@ -52,7 +48,7 @@ public class MapHandler implements OnMapReadyCallback,
     private ClusterManager<MarkerBean> mClusterManager;
     private static final String TAG = MapHandler.class.getSimpleName();
     public static final String KEY_RESULT_BEAN = "bean";
-    public static final int ON_CREATE_EVENT = 100;
+    public static final int ON_CREATE_MARKER = 100;
 
     //Map related
     private GoogleMap mMap;
@@ -121,7 +117,7 @@ public class MapHandler implements OnMapReadyCallback,
     }
 
     private void showChooseDialog(final Marker marker, final LatLng latLng) {
-        final Dialog chooseDialog = new Dialog(mDelegate.getContext(),R.style.transparentDialog);
+        final Dialog chooseDialog = new Dialog(mDelegate.getContext(), R.style.transparentDialog);
         chooseDialog.setContentView(R.layout.dialog_choose_action);
         chooseDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
@@ -133,18 +129,9 @@ public class MapHandler implements OnMapReadyCallback,
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        CallbackManager.getInstance()
-                                .addCallback(CallbackType.ON_CROP, new IGlobalCallback<Uri>() {
-                                    @Override
-                                    public void executeCallback(Uri args) {
-                                        Toast.makeText(mDelegate.getContext(), args.toString(), Toast.LENGTH_SHORT).show();
-                                        //TODO show create pic dialog
-                                        addIconMarker(args, "V", latLng);
-                                    }
-                                });
                         marker.remove();
                         chooseDialog.dismiss();
-                        mDelegate.startCameraWithCheck();
+                        mDelegate.startForResult(CreatePicDelegate.newInstance(latLng), ON_CREATE_MARKER);
                     }
                 });
         chooseDialog.findViewById(R.id.btn_dialog_event)
@@ -153,26 +140,22 @@ public class MapHandler implements OnMapReadyCallback,
                     public void onClick(View view) {
                         marker.remove();
                         chooseDialog.dismiss();
-                        mDelegate.startForResult(CreateEventDelegate.newInstance(latLng), ON_CREATE_EVENT);
+                        mDelegate.startForResult(CreateEventDelegate.newInstance(latLng), ON_CREATE_MARKER);
                     }
                 });
         chooseDialog.show();
     }
 
-    // add custom marker to map using icon generator class
-    private void addIconMarker(Uri args, CharSequence text, LatLng position) {
-//        TODO change desc and type
-        final MarkerBean bean = new MarkerBean(0, position.latitude, position.longitude, text.toString(),
-                " ", MarkerType.PICS_MARKER, false,
-                new String[]{args.toString()}, "username", "http://10.0.0.4/FunMap/icons/icon (15) ", System.currentTimeMillis());
-        mPresenter.addPicMarkers(mClusterManager, bean);
+    @Override
+    public void addIconMarker(MarkerBean bean) {
+        mPresenter.addMarker(mClusterManager, bean);
 
         float currentZoom = mMap.getCameraPosition().zoom;
         float targetZoom = (currentZoom + 1 <= mMap.getMaxZoomLevel()) ? currentZoom + 1 : currentZoom - 1;
 
         try {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                    position, targetZoom));
+                    new LatLng(bean.lat, bean.lng), targetZoom));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -195,7 +178,6 @@ public class MapHandler implements OnMapReadyCallback,
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
         return true;
     }
 

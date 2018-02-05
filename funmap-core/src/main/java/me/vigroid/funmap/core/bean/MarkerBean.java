@@ -23,9 +23,10 @@ public class MarkerBean implements ClusterItem, Parcelable {
     public String[] imgUris;
     public String userName;
     public String iconUri;
-    public long unixTime;
+    public long startTime;
+    public long endTime;
 
-    public MarkerBean(int ownerId, double lat, double lng, String title, String description, int type, boolean isSaved, String[] imgUris, String userName, String iconUri, long unixTime) {
+    public MarkerBean(int ownerId, double lat, double lng, String title, String description, int type, boolean isSaved, String[] imgUris, String userName, String iconUri, long startTime, long endTime) {
         this.ownerId = ownerId;
         this.lat = lat;
         this.lng = lng;
@@ -36,7 +37,8 @@ public class MarkerBean implements ClusterItem, Parcelable {
         this.imgUris = imgUris;
         this.userName = userName;
         this.iconUri = iconUri;
-        this.unixTime = unixTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     @Override
@@ -83,7 +85,8 @@ public class MarkerBean implements ClusterItem, Parcelable {
         this.imgUris = in.createStringArray();
         this.userName = in.readString();
         this.iconUri = in.readString();
-        this.unixTime = in.readLong();
+        this.startTime = in.readLong();
+        this.endTime = in.readLong();
     }
 
     @Override
@@ -103,6 +106,7 @@ public class MarkerBean implements ClusterItem, Parcelable {
         parcel.writeStringArray(this.imgUris);
         parcel.writeString(this.userName);
         parcel.writeString(this.iconUri);
-        parcel.writeLong(this.unixTime);
+        parcel.writeLong(this.startTime);
+        parcel.writeLong(this.endTime);
     }
 }

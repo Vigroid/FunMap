@@ -5,9 +5,7 @@ import android.os.Bundle;
 import butterknife.ButterKnife;
 import me.vigroid.funmap.core.activity.ProxyActivity;
 import me.vigroid.funmap.core.app.FunMap;
-import me.vigroid.funmap.impl.view.MapDelegate;
-import me.yokeyword.fragmentation.anim.DefaultVerticalAnimator;
-import me.yokeyword.fragmentation.anim.FragmentAnimator;
+import me.vigroid.funmap.impl.view.main.MapDelegate;
 
 public class MapsActivity extends ProxyActivity{
 

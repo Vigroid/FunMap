@@ -5,21 +5,13 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.MapView;
 
 import butterknife.BindView;
 import io.reactivex.subjects.PublishSubject;
-import me.vigroid.funmap.core.bean.MarkerBean;
 import me.vigroid.funmap.core.fragments.FunMapDelegate;
-import me.vigroid.funmap.impl.R;
-import me.vigroid.funmap.impl.adapter.MarkerAdapter;
-import me.vigroid.funmap.impl.lbs.MapHandler;
 import me.vigroid.funmap.impl.R2;
-import me.vigroid.funmap.impl.presenter.IMapPresenter;
-import me.vigroid.funmap.impl.presenter.MapPresenterImpl;
-import me.vigroid.funmap.impl.view.IMapDelegateView;
 
 /**
  * Created by yangv on 1/30/2018.

@@ -8,9 +8,11 @@ package me.vigroid.funmap.core.app;
 public enum ConfigKeys {
     CONFIG_READY,
     API_HOST,
-    IP,
-    PORT,
     INTERCEPTOR,
     ACTIVITY,
-    APPLICATION_CONTEXT
+    APPLICATION_CONTEXT,
+    SIGNED_IN,
+    USER_ID,
+    USER_ICON_URI,
+    USER_NAME
 }

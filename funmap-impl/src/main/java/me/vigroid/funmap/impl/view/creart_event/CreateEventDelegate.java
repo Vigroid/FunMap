@@ -1,4 +1,4 @@
-package me.vigroid.funmap.impl.view;
+package me.vigroid.funmap.impl.view.creart_event;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
-import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -31,6 +30,8 @@ import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import gapchenko.llttz.Converter;
 import gapchenko.llttz.stores.TimeZoneListStore;
+import me.vigroid.funmap.core.app.ConfigKeys;
+import me.vigroid.funmap.core.app.FunMap;
 import me.vigroid.funmap.core.bean.MarkerBean;
 import me.vigroid.funmap.core.bean.MarkerType;
 import me.vigroid.funmap.core.fragments.FunMapDelegate;
@@ -43,8 +44,8 @@ import me.vigroid.funmap.core.utils.callback.IGlobalCallback;
 import me.vigroid.funmap.impl.R;
 import me.vigroid.funmap.impl.R2;
 import me.vigroid.funmap.impl.lbs.MapHandler;
-import me.vigroid.funmap.impl.presenter.CreateEventPresenterImpl;
-import me.vigroid.funmap.impl.presenter.ICreateEventPresenter;
+import me.vigroid.funmap.impl.presenter.create_event.CreateEventPresenterImpl;
+import me.vigroid.funmap.impl.presenter.create_event.ICreateEventPresenter;
 
 /**
  * Created by yangv on 2/2/2018.
@@ -142,9 +143,10 @@ public class CreateEventDelegate extends FunMapDelegate implements ICreateEventV
     void onClickConfirm() {
         List<String> list = mAutoPhotoLayout.getImgUris();
         if (checkForm())
-            mPresenter.addEventMarker(new MarkerBean(0, latLng.latitude, latLng.longitude, mTitle.getText().toString(),
+            mPresenter.addEventMarker(new MarkerBean((Integer) FunMap.getConfiguration(ConfigKeys.USER_ID), latLng.latitude, latLng.longitude, mTitle.getText().toString(),
                     mDesc.getText().toString(), MarkerType.EVENT_MARKER, false, list.toArray(new String[list.size()]),
-                    "V", "http://10.0.0.4/FunMap/icons/icon (15) ", endTime.getTimeInMillis()));
+                    (String) FunMap.getConfiguration(ConfigKeys.USER_NAME), (String) FunMap.getConfiguration(ConfigKeys.USER_ICON_URI),
+                    startTime.getTimeInMillis(), endTime.getTimeInMillis()), isPrivate);
     }
 
     public static CreateEventDelegate newInstance(LatLng latLng) {
@@ -194,6 +196,12 @@ public class CreateEventDelegate extends FunMapDelegate implements ICreateEventV
         isEveryDay = false;
     }
 
+    @Override
+    public void onDestroy() {
+        mPresenter.detachView();
+        super.onDestroy();
+    }
+
     private boolean checkForm() {
         //check if data input matches our needs. If not return a null and show error.
         boolean isPass = true;
@@ -232,7 +240,7 @@ public class CreateEventDelegate extends FunMapDelegate implements ICreateEventV
     }
 
     @Override
-    public void popAndResult(MarkerBean bean) {
+    public void popAndResult(final MarkerBean bean) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(MapHandler.KEY_RESULT_BEAN, bean);
         setFragmentResult(RESULT_OK, bundle);

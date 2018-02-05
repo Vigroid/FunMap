@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"
+        android:orientation="vertical"
+        android:padding="@dimen/nav_header_vertical_spacing">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:counterEnabled="true"
+            app:counterMaxLength="20">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_title_pic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/title" />
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/nav_header_vertical_spacing"
+            android:text="@string/access_control"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <Spinner
+            android:id="@+id/spinner_ac_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/nav_header_vertical_spacing"
+            android:entries="@array/access_control_array" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/btn_picture"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <me.vigroid.funmap.core.ui.widget.AutoPhotoLayout
+            android:id="@+id/custom_auto_photo_layout_create_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/nav_header_vertical_spacing"
+            android:layout_marginRight="@dimen/nav_header_vertical_spacing"
+            android:layout_marginStart="@dimen/nav_header_vertical_spacing"
+            android:layout_marginTop="@dimen/nav_header_vertical_spacing"
+            app:icon_size="10sp"
+            app:item_margin="3"
+            app:line_count="5"
+            app:max_count="3" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorAccent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_create_pic_cancel"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/nav_header_vertical_spacing"
+            android:layout_marginRight="@dimen/nav_header_vertical_spacing"
+            android:layout_weight="1"
+            android:text="@string/np_cancel" />
+
+        <Button
+            android:id="@+id/btn_create_pic_confirm"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="@string/confirm" />
+
+    </LinearLayout>
+
+</LinearLayout>

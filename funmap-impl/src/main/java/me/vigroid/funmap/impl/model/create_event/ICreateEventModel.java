@@ -1,4 +1,4 @@
-package me.vigroid.funmap.impl.model;
+package me.vigroid.funmap.impl.model.create_event;
 
 
 import io.reactivex.Observable;

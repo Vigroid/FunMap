@@ -36,10 +36,14 @@
 
     <!--Errors-->
     <string name="cropping_error">Cropping error</string>
-    <string name="refresh_error">Refresh error! Please check your network.</string>
+    <string name="net_error">Please check your network.</string>
     <string name="upload_error">Upload error! Please check your account or network!</string>
+    <string name="login_psw_error">Login error! Please check your password and email combination!</string>
+    <string name="login_username_error">Login error! Username does not exist!</string>
     <string name="title_empty_error">Title can\'t be empty!</string>
     <string name="date_error">Please assign an End Time Later than Start Time</string>
+    <string name="marker_null_error">Sorry! Parcel problem occurs!</string>
+    <string name="img_empty_error">Sorry! No images have taken.</string>
 
     <string-array name="access_control_array">
         <item>Private</item>

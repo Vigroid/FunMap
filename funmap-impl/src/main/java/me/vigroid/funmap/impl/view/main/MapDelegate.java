@@ -1,4 +1,4 @@
-package me.vigroid.funmap.impl.view;
+package me.vigroid.funmap.impl.view.main;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -35,8 +35,8 @@ import me.vigroid.funmap.core.bean.MarkerBean;
 import me.vigroid.funmap.impl.R;
 import me.vigroid.funmap.impl.R2;
 import me.vigroid.funmap.impl.base.BaseMapDelegate;
-import me.vigroid.funmap.impl.presenter.IMapPresenter;
-import me.vigroid.funmap.impl.presenter.MapPresenterImpl;
+import me.vigroid.funmap.impl.presenter.main.IMapPresenter;
+import me.vigroid.funmap.impl.presenter.main.MapPresenterImpl;
 
 /**
  * Created by yangv on 1/22/2018.
@@ -151,7 +151,7 @@ public class MapDelegate extends BaseMapDelegate implements IMapDelegateView {
 
     @Override
     public void showRefreshError() {
-        Toast.makeText(this.getContext(), R.string.refresh_error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this.getContext(), R.string.net_error, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -206,10 +206,12 @@ public class MapDelegate extends BaseMapDelegate implements IMapDelegateView {
     @Override
     public void onFragmentResult(int requestCode, int resultCode, Bundle data) {
         super.onFragmentResult(requestCode, resultCode, data);
-        if (requestCode == MapHandler.ON_CREATE_EVENT && resultCode == RESULT_OK && data != null) {
+        if (requestCode == MapHandler.ON_CREATE_MARKER && resultCode == RESULT_OK && data != null) {
             MarkerBean bean = data.getParcelable(MapHandler.KEY_RESULT_BEAN);
             if (bean != null)
-                Toast.makeText(this.getContext(), bean.userName, Toast.LENGTH_SHORT).show();
+                mMapHandler.addIconMarker(bean);
+            else
+                Toast.makeText(_mActivity, R.string.marker_null_error, Toast.LENGTH_SHORT).show();
         }
     }
 }

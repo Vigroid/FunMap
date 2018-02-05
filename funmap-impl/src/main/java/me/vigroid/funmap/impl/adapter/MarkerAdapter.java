@@ -16,8 +16,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import me.vigroid.funmap.core.utils.ui.ScrimUtil;
 import me.vigroid.funmap.impl.R;
-import me.vigroid.funmap.impl.presenter.IMapPresenter;
-import me.vigroid.funmap.impl.view.IMarkerItemView;
+import me.vigroid.funmap.impl.presenter.main.IMapPresenter;
+import me.vigroid.funmap.impl.view.main.IMarkerItemView;
 
 /**
  * Created by yangv on 1/31/2018.

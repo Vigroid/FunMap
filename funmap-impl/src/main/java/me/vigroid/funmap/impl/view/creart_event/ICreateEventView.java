@@ -1,4 +1,4 @@
-package me.vigroid.funmap.impl.view;
+package me.vigroid.funmap.impl.view.creart_event;
 
 import me.vigroid.funmap.core.bean.MarkerBean;
 

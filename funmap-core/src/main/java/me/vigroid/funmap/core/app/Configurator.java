@@ -27,9 +27,11 @@ public class Configurator {
         //set default values for configs
         FUN_MAP_CONFIGS.put(ConfigKeys.CONFIG_READY,false);
         FUN_MAP_CONFIGS.put(ConfigKeys.API_HOST, "");
-        FUN_MAP_CONFIGS.put(ConfigKeys.IP, "");
-        FUN_MAP_CONFIGS.put(ConfigKeys.PORT, "");
         FUN_MAP_CONFIGS.put(ConfigKeys.INTERCEPTOR, INTERCEPTORS);
+        FUN_MAP_CONFIGS.put(ConfigKeys.SIGNED_IN, false);
+        FUN_MAP_CONFIGS.put(ConfigKeys.USER_ID, -1);
+        FUN_MAP_CONFIGS.put(ConfigKeys.USER_ICON_URI, "");
+        FUN_MAP_CONFIGS.put(ConfigKeys.USER_NAME, "");
     }
 
     //holder class for the singleton
@@ -49,16 +51,6 @@ public class Configurator {
     //set host IP
     public final Configurator withApiHost(String host){
         FUN_MAP_CONFIGS.put(ConfigKeys.API_HOST, host);
-        return this;
-    }
-
-    public final Configurator withIP(String ip){
-        FUN_MAP_CONFIGS.put(ConfigKeys.IP, ip);
-        return this;
-    }
-
-    public final Configurator withPort(String port){
-        FUN_MAP_CONFIGS.put(ConfigKeys.PORT, port);
         return this;
     }
     //Pass some Interceptor(Network)
@@ -81,6 +73,26 @@ public class Configurator {
     //Pass some IconFontDescriptor to add support for those icons
     public final Configurator withIcon(IconFontDescriptor descriptor){
         ICONS.add(descriptor);
+        return this;
+    }
+
+    public final Configurator withSignIn(boolean isSignIn){
+        FUN_MAP_CONFIGS.put(ConfigKeys.SIGNED_IN, isSignIn);
+        return this;
+    }
+
+    public final Configurator withUserID(int userID){
+        FUN_MAP_CONFIGS.put(ConfigKeys.USER_ID, userID);
+        return this;
+    }
+
+    public final Configurator withUserName(String userName){
+        FUN_MAP_CONFIGS.put(ConfigKeys.USER_NAME, userName);
+        return this;
+    }
+
+    public final Configurator withUserIcon(String userIcon){
+        FUN_MAP_CONFIGS.put(ConfigKeys.USER_ICON_URI, userIcon);
         return this;
     }
 

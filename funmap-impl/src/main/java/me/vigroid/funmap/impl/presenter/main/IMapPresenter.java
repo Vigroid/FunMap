@@ -1,11 +1,11 @@
-package me.vigroid.funmap.impl.presenter;
+package me.vigroid.funmap.impl.presenter.main;
 
 import com.google.maps.android.clustering.ClusterManager;
 
 import me.vigroid.funmap.core.bean.MarkerBean;
 import me.vigroid.funmap.impl.base.IPresenter;
 import me.vigroid.funmap.impl.filter.MarkerFilterTypes;
-import me.vigroid.funmap.impl.view.IMarkerItemView;
+import me.vigroid.funmap.impl.view.main.IMarkerItemView;
 
 /**
  * Created by yangv on 1/30/2018.
@@ -16,7 +16,7 @@ public interface IMapPresenter extends IPresenter {
 
     void onMapReady(ClusterManager<MarkerBean> clusterManager);
 
-    void addPicMarkers(ClusterManager<MarkerBean> clusterManager, MarkerBean bean);
+    void addMarker(ClusterManager<MarkerBean> clusterManager, MarkerBean bean);
 
     void loadMarkers();
 
