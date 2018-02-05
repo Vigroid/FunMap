@@ -22,9 +22,6 @@
     <string name="np_set">Set</string>
     <string name="np_title">Choose the range(miles)</string>
     <string name="search_nearby">Search Nearby</string>
-    <string name="cropping_error">Cropping error</string>
-
-    <string name="refresh_error">Refresh error! Please check your network.</string>
     <string name="fa_times">{fa-times}</string>
     <string name="fa_thumbs_o_up">{fa-thumbs-o-up}</string>
     <string name="fa_star_o">{fa-star-o}</string>
@@ -36,6 +33,13 @@
     <string name="every_day">Every Day</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
+
+    <!--Errors-->
+    <string name="cropping_error">Cropping error</string>
+    <string name="refresh_error">Refresh error! Please check your network.</string>
+    <string name="upload_error">Upload error! Please check your account or network!</string>
+    <string name="title_empty_error">Title can\'t be empty!</string>
+    <string name="date_error">Please assign an End Time Later than Start Time</string>
 
     <string-array name="access_control_array">
         <item>Private</item>

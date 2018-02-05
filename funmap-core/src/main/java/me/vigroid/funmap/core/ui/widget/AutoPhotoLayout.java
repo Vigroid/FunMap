@@ -48,7 +48,7 @@ public final class AutoPhotoLayout extends LinearLayoutCompat {
     private AlertDialog mTargetDialog = null;
     private static final String ICON_TEXT = "{fa-plus}";
     private final float mIconSize;
-    private List<Uri> uris = new ArrayList<>();
+    private final ArrayList<String> imgUris = new ArrayList<>();
 
     private final ArrayList<ArrayList<View>> ALL_VIEWS = new ArrayList<>();
     private final ArrayList<Integer> LINE_HEIGHTS = new ArrayList<>();
@@ -80,13 +80,8 @@ public final class AutoPhotoLayout extends LinearLayoutCompat {
     }
 
     public final void onCropTarget(Uri uri) {
-        if (uris.contains(uri)){
-            Toast.makeText(mDelegate.getContext(), R.string.image_existed_warning, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        uris.add(uri);
         createNewImageView();
+        imgUris.add(uri.toString());
         Glide.with(mDelegate)
                 .load(uri)
                 .centerCrop()
@@ -129,6 +124,7 @@ public final class AutoPhotoLayout extends LinearLayoutCompat {
                                     deleteImageView.setAnimation(animation);
                                     animation.start();
                                     AutoPhotoLayout.this.removeView(deleteImageView);
+                                    imgUris.remove(imgUris.size()-1);
                                     mCurrentNum -= 1;
                                     //当数目达到上限时隐藏添加按钮，不足时显示
                                     if (mCurrentNum < mMaxNum) {
@@ -305,5 +301,9 @@ public final class AutoPhotoLayout extends LinearLayoutCompat {
         super.onFinishInflate();
         initAddIcon();
         mTargetDialog = new AlertDialog.Builder(getContext()).create();
+    }
+
+    public List<String> getImgUris(){
+        return imgUris;
     }
 }

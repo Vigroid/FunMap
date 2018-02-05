@@ -19,8 +19,6 @@ import android.widget.Toast;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -28,7 +26,6 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
-import io.reactivex.subjects.PublishSubject;
 import me.vigroid.funmap.core.lbs.IMapHandler;
 import me.vigroid.funmap.core.utils.dimen.DimenUtil;
 import me.vigroid.funmap.impl.adapter.MarkerAdapter;
@@ -201,7 +198,7 @@ public class MapDelegate extends BaseMapDelegate implements IMapDelegateView {
                 (mSlideLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || mSlideLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
             mSlideLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
             return true;
-        } else{
+        } else {
             return super.onBackPressedSupport();
         }
     }
@@ -210,7 +207,9 @@ public class MapDelegate extends BaseMapDelegate implements IMapDelegateView {
     public void onFragmentResult(int requestCode, int resultCode, Bundle data) {
         super.onFragmentResult(requestCode, resultCode, data);
         if (requestCode == MapHandler.ON_CREATE_EVENT && resultCode == RESULT_OK && data != null) {
-            Toast.makeText(this.getContext(), data.getString(MapHandler.KEY_RESULT_BEAN), Toast.LENGTH_SHORT).show();
+            MarkerBean bean = data.getParcelable(MapHandler.KEY_RESULT_BEAN);
+            if (bean != null)
+                Toast.makeText(this.getContext(), bean.userName, Toast.LENGTH_SHORT).show();
         }
     }
 }

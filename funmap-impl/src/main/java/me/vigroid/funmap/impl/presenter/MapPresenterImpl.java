@@ -12,7 +12,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import me.vigroid.funmap.core.bean.MarkerBean;
 import me.vigroid.funmap.core.bean.MarkerType;
-import me.vigroid.funmap.core.response.MarkerResponse;
+import me.vigroid.funmap.core.response.MarkersResponse;
 import me.vigroid.funmap.impl.filter.MarkerFilterTypes;
 import me.vigroid.funmap.impl.model.IMapModel;
 import me.vigroid.funmap.impl.model.MapModelImpl;
@@ -40,10 +40,10 @@ public class MapPresenterImpl implements IMapPresenter {
         mapModel.fetchMarkers()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map(new Function<MarkerResponse, List<MarkerBean>>() {
+                .map(new Function<MarkersResponse, List<MarkerBean>>() {
                     @Override
-                    public List<MarkerBean> apply(MarkerResponse markerResponse) throws Exception {
-                        return markerResponse.markerBeans;
+                    public List<MarkerBean> apply(MarkersResponse markersResponse) throws Exception {
+                        return markersResponse.markerBeans;
                     }
                 })
                 .subscribe(new MarkerSingleObserver());

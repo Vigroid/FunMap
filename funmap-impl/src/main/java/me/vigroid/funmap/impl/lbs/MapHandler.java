@@ -153,8 +153,7 @@ public class MapHandler implements OnMapReadyCallback,
                     public void onClick(View view) {
                         marker.remove();
                         chooseDialog.dismiss();
-                        //TODO start create event delegate
-                        mDelegate.startForResult(new CreateEventDelegate(), ON_CREATE_EVENT);
+                        mDelegate.startForResult(CreateEventDelegate.newInstance(latLng), ON_CREATE_EVENT);
                     }
                 });
         chooseDialog.show();
@@ -226,5 +225,4 @@ public class MapHandler implements OnMapReadyCallback,
         Marker currentMarker = mMap.addMarker(markerOpt);
         showChooseDialog(currentMarker, latLng);
     }
-
 }

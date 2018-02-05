@@ -3,16 +3,14 @@ package me.vigroid.funmap.core.net.rx;
 import android.content.Context;
 
 import java.io.File;
-import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import me.vigroid.funmap.core.bean.MarkerBean;
 import me.vigroid.funmap.core.net.HttpMethod;
 import me.vigroid.funmap.core.net.RestCreator;
-import me.vigroid.funmap.core.response.MarkerResponse;
+import me.vigroid.funmap.core.response.MarkersResponse;
 import me.vigroid.funmap.core.ui.loader.FunMapLoader;
 import me.vigroid.funmap.core.ui.loader.LoaderStyle;
 import okhttp3.MediaType;
@@ -97,7 +95,7 @@ public class RxRestClient {
         return request(HttpMethod.GET);
     }
 
-    public Single<MarkerResponse> getMarkers() {
+    public Single<MarkersResponse> getMarkers() {
         return RestCreator.getRxRestService().getMarkers(URL, PARAMS);
     }
 

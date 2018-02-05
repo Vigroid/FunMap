@@ -15,11 +15,12 @@ import me.vigroid.funmap.core.utils.dimen.DimenUtil;
 
 /**
  * Created by vigroid on 10/3/17.
+ * Loader styles
  */
 
 public class FunMapLoader {
 
-    private static final int LOADER_SIZE_SCALE = 8;
+    private static final int LOADER_SIZE_SCALE = 5;
     private static final int LOADER_OFFSET_SCALE = 10;
 
     private static final ArrayList<AppCompatDialog> LOADERS = new ArrayList<>();
@@ -33,8 +34,9 @@ public class FunMapLoader {
 
     public static void showLoading(Context context, String type) {
 
-        final AppCompatDialog dialog = new AppCompatDialog(context, R.style.dialog);
+        final AppCompatDialog dialog = new AppCompatDialog(context, R.style.loaderDialog);
 
+        dialog.setCanceledOnTouchOutside(false);
         final AVLoadingIndicatorView avLoadingIndicatorView = LoaderCreator.create(type, context);
         dialog.setContentView(avLoadingIndicatorView);
 

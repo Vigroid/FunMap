@@ -4,7 +4,7 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import me.vigroid.funmap.core.bean.MarkerBean;
 import me.vigroid.funmap.core.net.rx.RxRestClient;
-import me.vigroid.funmap.core.response.MarkerResponse;
+import me.vigroid.funmap.core.response.MarkersResponse;
 
 /**
  * Created by yangv on 1/30/2018.
@@ -14,7 +14,7 @@ import me.vigroid.funmap.core.response.MarkerResponse;
 public class MapModelImpl implements IMapModel {
 
     @Override
-    public Single<MarkerResponse> fetchMarkers() {
+    public Single<MarkersResponse> fetchMarkers() {
 
         return RxRestClient.builder()
                 .url("testMarkers.php")

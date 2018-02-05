@@ -27,7 +27,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 public abstract class BaseDelegate extends Fragment implements ISupportFragment {
 
     private final SupportFragmentDelegate mDelegate = new SupportFragmentDelegate(this);
-    protected FragmentActivity mActivity = null;
+    protected FragmentActivity _mActivity = null;
 
     private Unbinder mUnBinder = null;
 
@@ -39,7 +39,7 @@ public abstract class BaseDelegate extends Fragment implements ISupportFragment 
     public void onAttach(Context context) {
         super.onAttach(context);
         mDelegate.onAttach((Activity) context);
-        mActivity = mDelegate.getActivity();
+        _mActivity = mDelegate.getActivity();
     }
 
     @Override
@@ -80,7 +80,7 @@ public abstract class BaseDelegate extends Fragment implements ISupportFragment 
     }
 
     public final ProxyActivity getProxyActivity() {
-        return (ProxyActivity) mActivity;
+        return (ProxyActivity) _mActivity;
     }
 
     @Override

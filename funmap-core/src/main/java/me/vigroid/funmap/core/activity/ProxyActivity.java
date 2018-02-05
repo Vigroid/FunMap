@@ -21,7 +21,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * We use Fragmentation(by yoke) here to manage fragments
  */
 
-public abstract class ProxyActivity extends AppCompatActivity implements ISupportActivity{
+public abstract class ProxyActivity extends AppCompatActivity implements ISupportActivity {
 
     private final SupportActivityDelegate mDelegate = new SupportActivityDelegate(this);
     private static final long WAIT_TIME = 2000L;
@@ -42,6 +42,7 @@ public abstract class ProxyActivity extends AppCompatActivity implements ISuppor
     public void loadRootFragment(int containerId, @NonNull ISupportFragment toFragment) {
         mDelegate.loadRootFragment(containerId, toFragment);
     }
+
     /**
      * Note： return mDelegate.dispatchTouchEvent(ev) || super.dispatchTouchEvent(ev);
      */

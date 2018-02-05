@@ -6,6 +6,8 @@ import butterknife.ButterKnife;
 import me.vigroid.funmap.core.activity.ProxyActivity;
 import me.vigroid.funmap.core.app.FunMap;
 import me.vigroid.funmap.impl.view.MapDelegate;
+import me.yokeyword.fragmentation.anim.DefaultVerticalAnimator;
+import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 public class MapsActivity extends ProxyActivity{
 
@@ -22,4 +24,5 @@ public class MapsActivity extends ProxyActivity{
             loadRootFragment(R.id.root_delegate_container, new MapDelegate());
         }
     }
+
 }

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v4.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="8">
@@ -22,8 +22,8 @@
                 app:counterEnabled="true"
                 app:counterMaxLength="20">
 
-                <EditText
-                    android:id="@+id/et_title"
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_title_event"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/title" />
@@ -35,8 +35,8 @@
                 app:counterEnabled="true"
                 app:counterMaxLength="150">
 
-                <EditText
-                    android:id="@+id/et_desc"
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_desc_event"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start"
@@ -55,6 +55,7 @@
                 android:textSize="20sp" />
 
             <Spinner
+                android:id="@+id/spinner_ac_event"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/nav_header_vertical_spacing"
@@ -123,6 +124,7 @@
                         android:textSize="16sp" />
 
                     <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/switch_every_day"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -146,6 +148,7 @@
                         android:textSize="20sp" />
 
                     <TextView
+                        android:id="@+id/tv_start_time_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -153,23 +156,23 @@
                         android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:layout_toEndOf="@+id/ictv_start"
                         android:layout_toRightOf="@+id/ictv_start"
-                        android:text="Fri,Feb,2,2018"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/tv_start_time_hour"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="1:00 AM"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/rl_end_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/activity_vertical_margin">
@@ -183,6 +186,7 @@
                         android:textSize="20sp" />
 
                     <TextView
+                        android:id="@+id/tv_end_time_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -190,17 +194,16 @@
                         android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:layout_toEndOf="@+id/ictv_end"
                         android:layout_toRightOf="@+id/ictv_end"
-                        android:text="Fri,Feb,2,2018"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/tv_end_time_hour"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="2:00 AM"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
 
@@ -209,7 +212,7 @@
             </LinearLayout>
 
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
