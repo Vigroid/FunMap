@@ -3,6 +3,7 @@ package me.vigroid.funmap.impl.view.main;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DividerItemDecoration;
@@ -37,6 +38,7 @@ import me.vigroid.funmap.impl.R2;
 import me.vigroid.funmap.impl.base.BaseMapDelegate;
 import me.vigroid.funmap.impl.presenter.main.IMapPresenter;
 import me.vigroid.funmap.impl.presenter.main.MapPresenterImpl;
+import me.vigroid.funmap.impl.view.login.LoginDelegate;
 
 /**
  * Created by yangv on 1/22/2018.
@@ -83,6 +85,9 @@ public class MapDelegate extends BaseMapDelegate implements IMapDelegateView {
         showRangeFilterDialog();
     }
 
+    @BindView(R2.id.nav_view)
+    NavigationView mNavigationView = null;
+
     @OnTextChanged(value = R2.id.et_near_marker, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     void onMarkerSearchTextChanged(CharSequence query) {
         mPublishSubject.onNext(query.toString());
@@ -126,6 +131,13 @@ public class MapDelegate extends BaseMapDelegate implements IMapDelegateView {
                         mPresenter.filterMarkers(MarkerFilterTypes.KEYWORD, s);
                     }
                 });
+
+        mNavigationView.getHeaderView(0).findViewById(R.id.tv_header_username).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                start(new LoginDelegate());
+            }
+        });
     }
 
     @Override

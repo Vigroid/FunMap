@@ -5,6 +5,7 @@ import io.reactivex.Single;
 import me.vigroid.funmap.core.bean.MarkerBean;
 import me.vigroid.funmap.core.net.rx.RxRestClient;
 import me.vigroid.funmap.core.response.MarkersResponse;
+import me.vigroid.funmap.impl.api.API;
 
 /**
  * Created by yangv on 1/30/2018.
@@ -17,7 +18,7 @@ public class MapModelImpl implements IMapModel {
     public Single<MarkersResponse> fetchMarkers() {
 
         return RxRestClient.builder()
-                .url("testMarkers.php")
+                .url(API.FETCH_MARKERS)
                 .build()
                 .getMarkers();
 

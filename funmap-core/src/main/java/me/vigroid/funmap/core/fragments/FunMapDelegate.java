@@ -2,6 +2,11 @@ package me.vigroid.funmap.core.fragments;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.widget.Toast;
+
+import me.vigroid.funmap.core.R;
+import me.vigroid.funmap.core.ui.loader.FunMapLoader;
+import me.vigroid.funmap.core.ui.loader.LoaderStyle;
 
 /**
  * Created by vigroid on 10/12/17.

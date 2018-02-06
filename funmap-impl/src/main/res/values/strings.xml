@@ -33,6 +33,18 @@
     <string name="every_day">Every Day</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
+    <string name="register">Register</string>
+    <string name="repeat_password">Password Again</string>
+    <string name="email">Email</string>
+    <string name="name">Name</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log in</string>
+    <string name="sign_up">Not Registered? Sign up now!</string>
+
+    <!--Notify-->
+    <string name="notify_log_in">Signed in as %s!</string>
+    <string name="notify_log_out">Logged out!</string>
 
     <!--Errors-->
     <string name="cropping_error">Cropping error</string>
@@ -44,6 +56,10 @@
     <string name="date_error">Please assign an End Time Later than Start Time</string>
     <string name="marker_null_error">Sorry! Parcel problem occurs!</string>
     <string name="img_empty_error">Sorry! No images have taken.</string>
+    <string name="forget_password">Forget password?</string>
+    <string name="user_less_than">Length is at least %d characters</string>
+    <string name="psw_less_than">Length is at least %d digits</string>
+
 
     <string-array name="access_control_array">
         <item>Private</item>
